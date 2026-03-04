@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Humpback Whale Alert</title>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #070710;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image:
+                linear-gradient(rgba(247,147,26,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(247,147,26,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* ── Header ── */
+        .header {
+            text-align: center;
+            padding: 2.5rem 1rem 1.2rem;
+        }
+
+        .whale-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 0.4rem;
+            animation: float 3.5s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-10px); }
+        }
+
+        .title {
+            font-size: clamp(1.6rem, 5vw, 3rem);
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #f7931a 0%, #ffd166 50%, #f7931a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { filter: drop-shadow(0 0 6px rgba(247,147,26,0.4)); }
+            50%       { filter: drop-shadow(0 0 22px rgba(247,147,26,0.85)); }
+        }
+
+        .tagline {
+            font-size: 0.75rem;
+            color: #4a4a65;
+            margin-top: 0.5rem;
+            letter-spacing: 0.02em;
+        }
+
+        .live-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            background: rgba(74,222,128,0.08);
+            border: 1px solid rgba(74,222,128,0.25);
+            border-radius: 20px;
+            padding: 0.3rem 0.9rem;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: #4ade80;
+            margin-top: 0.9rem;
+        }
+
+        .live-dot {
+            width: 7px;
+            height: 7px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: blink 1.4s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0.25; }
+        }
+
+        /* ── Whale analytics bar ── */
+        .whale-stats {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            max-width: 860px;
+            margin: 1.4rem auto 0;
+            padding: 0 1rem;
+        }
+
+        .whale-stat-card {
+            flex: 1;
+            min-width: 200px;
+            background: #0d1120;
+            border: 1px solid #1c1c30;
+            border-radius: 14px;
+            padding: 1.1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+
+        .whale-stat-card:hover { border-color: #2a2a48; }
+
+        .whale-stat-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(247,147,26,0.04) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .wsc-icon {
+            font-size: 1.9rem;
+            line-height: 1;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 6px rgba(247,147,26,0.25));
+        }
+
+        .wsc-value {
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: #f7931a;
+            line-height: 1.1;
+            white-space: nowrap;
+        }
+
+        .wsc-label {
+            font-size: 0.6rem;
+            color: #444466;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            margin-top: 0.22rem;
+        }
+
+        @media (max-width: 560px) {
+            .whale-stat-card { min-width: 140px; padding: 0.9rem 1rem; }
+            .wsc-value { font-size: 1.1rem; }
+            .wsc-icon { font-size: 1.5rem; }
+        }
+
+        /* ── Stats bar ── */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 1rem;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .stat {
+            background: #0d1120;
+            border: 1px solid #1c1c30;
+            border-radius: 10px;
+            padding: 0.55rem 1.3rem;
+            text-align: center;
+            min-width: 115px;
+        }
+
+        .stat-label {
+            font-size: 0.62rem;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            margin-bottom: 0.2rem;
+        }
+
+        .stat-value {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #f7931a;
+        }
+
+        /* ── Progress bar ── */
+        .refresh-strip {
+            max-width: 860px;
+            margin: 0.2rem auto 0.8rem;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-size: 0.7rem;
+            color: #3a3a55;
+        }
+
+        .progress-track {
+            flex: 1;
+            height: 2px;
+            background: #181828;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f7931a, #ffd166);
+            border-radius: 2px;
+        }
+
+        /* ── Feed ── */
+        .feed {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 1rem 4rem;
+        }
+
+        .feed-meta {
+            text-align: center;
+            font-size: 0.72rem;
+            color: #3a3a55;
+            margin-bottom: 1.2rem;
+            letter-spacing: 0.04em;
+        }
+
+        /* ── Loading ── */
+        .loading-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 5rem 2rem;
+            gap: 1rem;
+        }
+
+        .spinner {
+            width: 46px;
+            height: 46px;
+            border: 3px solid #181828;
+            border-top-color: #f7931a;
+            border-radius: 50%;
+            animation: spin 0.75s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-text { color: #555; font-size: 0.88rem; }
+
+        /* ── Error ── */
+        .error-box {
+            background: rgba(239,68,68,0.07);
+            border: 1px solid rgba(239,68,68,0.3);
+            border-radius: 10px;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            color: #ef4444;
+            margin: 2rem auto;
+            max-width: 600px;
+            font-size: 0.9rem;
+        }
+
+        /* ── Empty state ── */
+        .empty-wrap {
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .empty-emoji {
+            font-size: 4rem;
+            display: block;
+            opacity: 0.2;
+            margin-bottom: 1rem;
+        }
+
+        .empty-title {
+            font-size: 1.05rem;
+            color: #3a3a55;
+            margin-bottom: 0.4rem;
+        }
+
+        .empty-sub {
+            font-size: 0.8rem;
+            color: #2a2a40;
+        }
+
+        /* ── Transaction cards ── */
+        .tx-card {
+            background: #0d1120;
+            border: 1px solid #1c1c30;
+            border-radius: 14px;
+            padding: 1.2rem 1.4rem;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+            animation: slideDown 0.35s ease;
+            transition: border-color 0.2s, transform 0.15s;
+        }
+
+        .tx-card:hover {
+            border-color: #2a2a48;
+            transform: translateY(-2px);
+        }
+
+        /* left accent bar */
+        .tx-card::before {
+            content: '';
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 4px;
+            background: #f7931a;
+            border-radius: 14px 0 0 14px;
+        }
+
+        /* mega whale variant */
+        .tx-card.mega {
+            background: #130e0e;
+            border-color: rgba(239,68,68,0.35);
+        }
+
+        .tx-card.mega::before {
+            background: #ef4444;
+            box-shadow: 0 0 14px rgba(239,68,68,0.7);
+            animation: redPulse 1.6s ease-in-out infinite;
+        }
+
+        @keyframes redPulse {
+            0%, 100% { box-shadow: 0 0 8px rgba(239,68,68,0.5); }
+            50%       { box-shadow: 0 0 22px rgba(239,68,68,0.9); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-18px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Card header row */
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .amount-btc {
+            font-size: 1.65rem;
+            font-weight: 900;
+            color: #f7931a;
+            line-height: 1.1;
+        }
+
+        .tx-card.mega .amount-btc { color: #ef4444; }
+
+        .amount-usd {
+            font-size: 0.85rem;
+            color: #6b6b8a;
+            margin-top: 0.1rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.22rem 0.65rem;
+            border-radius: 20px;
+            font-size: 0.67rem;
+            font-weight: 800;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+        }
+
+        .badge-normal {
+            background: rgba(247,147,26,0.12);
+            border: 1px solid rgba(247,147,26,0.3);
+            color: #f7931a;
+        }
+
+        .badge-mega {
+            background: rgba(239,68,68,0.12);
+            border: 1px solid rgba(239,68,68,0.35);
+            color: #ef4444;
+            animation: badgePulse 1.6s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0.55; }
+        }
+
+        .conf-tag {
+            font-size: 0.65rem;
+            color: #3a3a55;
+            margin-top: 0.35rem;
+            text-align: right;
+        }
+
+        /* Card fields grid */
+        .fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem 1.2rem;
+        }
+
+        @media (max-width: 560px) {
+            .fields { grid-template-columns: 1fr; }
+        }
+
+        .field-label {
+            font-size: 0.6rem;
+            color: #444466;
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+            margin-bottom: 0.18rem;
+        }
+
+        .field-val {
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            color: #9090b0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .field-val a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+
+        .field-val a:hover {
+            color: #93c5fd;
+            text-decoration: underline;
+        }
+
+        .field-val.ts { color: #555570; }
+
+        .detected-val {
+            color: #7a7a9a;
+            font-style: italic;
+        }
+
+        /* ── Direction flow strip ── */
+        .dir-strip {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .dir-node {
+            flex: 0 1 auto;
+            max-width: 44%;
+            padding: 0.28rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.055em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        .dir-node--exchange {
+            background: rgba(59,130,246,0.12);
+            border: 1px solid rgba(59,130,246,0.32);
+            color: #60a5fa;
+        }
+
+        .dir-node--wallet {
+            background: rgba(247,147,26,0.08);
+            border: 1px solid rgba(247,147,26,0.22);
+            color: #b8720e;
+        }
+
+        .dir-node--unknown {
+            background: rgba(60,60,80,0.12);
+            border: 1px solid rgba(60,60,80,0.25);
+            color: #424258;
+        }
+
+        .dir-node--coinbase {
+            background: rgba(74,222,128,0.07);
+            border: 1px solid rgba(74,222,128,0.2);
+            color: #3db86a;
+        }
+
+        /* arrow line between nodes */
+        .dir-sep {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            min-width: 1rem;
+        }
+
+        .dir-sep::before {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, #1c1c30, #252540);
+        }
+
+        .dir-sep::after {
+            content: '▶';
+            font-size: 0.4rem;
+            color: #2a2a48;
+            flex-shrink: 0;
+            margin-left: 1px;
+        }
+
+        /* ── Dormant whale banner ── */
+        .dormant-banner {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.55rem 0.9rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .dormant-banner.dormant-1y {
+            background: rgba(251,191,36,0.06);
+            border: 1px solid rgba(251,191,36,0.25);
+        }
+        .dormant-1y .dormant-title { color: #f5c842; }
+        .dormant-1y .dormant-sub   { color: #7a6520; }
+
+        .dormant-banner.dormant-3y {
+            background: rgba(249,115,22,0.06);
+            border: 1px solid rgba(249,115,22,0.28);
+        }
+        .dormant-3y .dormant-title { color: #f97316; }
+        .dormant-3y .dormant-sub   { color: #7a4018; }
+
+        .dormant-banner.dormant-5y {
+            background: rgba(239,68,68,0.06);
+            border: 1px solid rgba(239,68,68,0.3);
+            animation: dormantPulse 2.5s ease-in-out infinite;
+        }
+        @keyframes dormantPulse {
+            0%, 100% { border-color: rgba(239,68,68,0.3); }
+            50%       { border-color: rgba(239,68,68,0.75); box-shadow: 0 0 10px rgba(239,68,68,0.12); }
+        }
+        .dormant-5y .dormant-title { color: #ef4444; }
+        .dormant-5y .dormant-sub   { color: #7a2828; }
+
+        .dormant-icon {
+            font-size: 1.45rem;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+
+        .dormant-title {
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        .dormant-sub {
+            font-size: 0.67rem;
+            margin-top: 0.15rem;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* ── Exchange / wallet labels ── */
+        .exchange-label {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(59,130,246,0.12);
+            border: 1px solid rgba(59,130,246,0.35);
+            color: #60a5fa;
+            font-size: 0.58rem;
+            font-weight: 700;
+            padding: 0.12rem 0.48rem;
+            border-radius: 8px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            margin-right: 0.38rem;
+            vertical-align: middle;
+        }
+
+        .unknown-label {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(80,80,100,0.1);
+            border: 1px solid rgba(80,80,100,0.18);
+            color: #4a4a62;
+            font-size: 0.58rem;
+            font-weight: 600;
+            padding: 0.12rem 0.48rem;
+            border-radius: 8px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            margin-right: 0.38rem;
+            vertical-align: middle;
+        }
+
+        /* ── Sound toggle ── */
+        .sound-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            gap: 0.38rem;
+            background: #0d1120;
+            border: 1px solid #1c1c30;
+            border-radius: 20px;
+            padding: 0.42rem 0.95rem;
+            color: #424258;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s, background 0.2s;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            user-select: none;
+        }
+
+        .sound-toggle:hover {
+            border-color: #2a2a48;
+            color: #7070a0;
+        }
+
+        .sound-toggle.on {
+            border-color: rgba(74,222,128,0.35);
+            background: rgba(74,222,128,0.05);
+            color: #4ade80;
+        }
+
+        .sound-toggle .s-icon { font-size: 0.9rem; line-height: 1; }
+    </style>
+</head>
+<body>
+
+<button id="soundToggle" class="sound-toggle" onclick="toggleSound()" title="Toggle whale sound alerts">
+    <span class="s-icon" id="soundIcon">🔇</span>
+    <span id="soundText">Sound OFF</span>
+</button>
+
+<header class="header">
+    <span class="whale-icon">🐋</span>
+    <h1 class="title">Bitcoin Humpback Whale Alert</h1>
+    <p class="tagline">Spot the humpbacks before the waves hit the market — monitoring Bitcoin transfers over 100 BTC</p>
+    <div><span class="live-pill"><span class="live-dot"></span>LIVE FEED</span></div>
+</header>
+
+<div class="whale-stats">
+    <div class="whale-stat-card">
+        <div class="wsc-icon">🐋</div>
+        <div>
+            <div class="wsc-value" id="wsWhalesDay">—</div>
+            <div class="wsc-label">Whales Today</div>
+        </div>
+    </div>
+    <div class="whale-stat-card">
+        <div class="wsc-icon">💰</div>
+        <div>
+            <div class="wsc-value" id="wsBiggest">—</div>
+            <div class="wsc-label">Biggest Move</div>
+        </div>
+    </div>
+    <div class="whale-stat-card">
+        <div class="wsc-icon">📊</div>
+        <div>
+            <div class="wsc-value" id="wsTotal">—</div>
+            <div class="wsc-label">Total BTC Moved</div>
+        </div>
+    </div>
+</div>
+
+<div class="stats-bar">
+    <div class="stat">
+        <div class="stat-label">BTC Price</div>
+        <div class="stat-value" id="statPrice">—</div>
+    </div>
+    <div class="stat">
+        <div class="stat-label">Whales Found</div>
+        <div class="stat-value" id="statCount">—</div>
+    </div>
+    <div class="stat">
+        <div class="stat-label">Last Updated</div>
+        <div class="stat-value" id="statTime" style="font-size:0.82rem">—</div>
+    </div>
+</div>
+
+<div class="refresh-strip">
+    <span>Refresh in</span>
+    <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width:100%"></div>
+    </div>
+    <span id="countdown">15s</span>
+</div>
+
+<div class="feed" id="feed">
+    <div class="loading-wrap">
+        <div class="spinner"></div>
+        <div class="loading-text">Scanning the blockchain for whales…</div>
+    </div>
+</div>
+
+<script>
+'use strict';
+
+const SATS         = 100_000_000;
+const WHALE_BTC    = 100;
+const MEGA_BTC     = 1000;
+const INTERVAL_MS  = 15_000;
+const BASE         = 'https://mempool.space';
+const STORAGE_KEY  = 'whale_24h';
+const TTL_MS       = 24 * 60 * 60 * 1000;
+
+let btcPrice = null;
+let cdValue  = INTERVAL_MS / 1000;
+let cdTimer  = null;
+
+/* ── Formatters ────────────────────────────────────── */
+
+function fmtBtc(n) {
+    return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 });
+}
+
+function fmtUsd(n) {
+    if (n >= 1e9) return '$' + (n / 1e9).toFixed(2) + 'B';
+    if (n >= 1e6) return '$' + (n / 1e6).toFixed(2) + 'M';
+    return '$' + Math.round(n).toLocaleString('en-US');
+}
+
+function fmtAddr(a) {
+    if (!a || a === 'Unknown') return 'Unknown';
+    return a.length <= 20 ? a : a.slice(0, 9) + '…' + a.slice(-9);
+}
+
+function fmtTime(ts) {
+    if (!ts) return 'Pending (mempool)';
+    return new Date(ts * 1000).toLocaleTimeString('en-US', {
+        hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
+}
+
+// Relative age from an epoch-ms timestamp
+function relTime(ms) {
+    const diff  = Date.now() - ms;
+    const mins  = Math.floor(diff / 60_000);
+    const hours = Math.floor(diff / 3_600_000);
+    if (mins  <  1) return 'just now';
+    if (mins  < 60) return `${mins}m ago`;
+    return `${hours}h ${mins % 60}m ago`;
+}
+
+// Full date+time string for tooltip
+function fullDateTime(ms) {
+    return new Date(ms).toLocaleString('en-US', {
+        month: 'short', day: 'numeric',
+        hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
+}
+
+/* ── localStorage persistence ──────────────────────── */
+
+// Only store what's needed for display — avoids bloating localStorage
+function trimForStorage(tx) {
+    const out = {
+        txid:   tx.txid,
+        vout:   tx.vout,
+        vin:    tx.vin ? [tx.vin[0]] : [],
+        status: tx.status,
+        _src:   tx._src,
+        _foundAt: tx._foundAt
+    };
+    // Persist dormancy so we don't re-fetch on next page load
+    if (tx._dormancyYears !== undefined) out._dormancyYears = tx._dormancyYears;
+    return out;
+}
+
+function loadStored() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return [];
+        const txs    = JSON.parse(raw);
+        const cutoff = Date.now() - TTL_MS;
+        return txs.filter(tx => tx._foundAt && tx._foundAt >= cutoff);
+    } catch {
+        return [];
+    }
+}
+
+function saveStored(txs) {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(txs.map(trimForStorage)));
+    } catch {
+        // localStorage full — keep newest half only
+        try {
+            const half = txs.slice(0, Math.ceil(txs.length / 2));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(half.map(trimForStorage)));
+        } catch { /* give up gracefully */ }
+    }
+}
+
+// Merge stored txs with fresh ones from the API.
+// Existing txids keep their original _foundAt; new ones get stamped now.
+function mergeTxs(stored, fresh) {
+    const map = new Map(stored.map(tx => [tx.txid, tx]));
+    const now = Date.now();
+    for (const tx of fresh) {
+        if (!map.has(tx.txid)) {
+            map.set(tx.txid, { ...tx, _foundAt: now });
+        }
+        // already stored → preserve original _foundAt, just update live fields
+    }
+    return Array.from(map.values());
+}
+
+/* ── API helpers ───────────────────────────────────── */
+
+async function apiFetch(path) {
+    const r = await fetch(BASE + path);
+    if (!r.ok) throw new Error(`HTTP ${r.status} — ${path}`);
+    return r.json();
+}
+
+function txValueSats(tx) {
+    return (tx.vout || []).reduce((s, o) => s + (o.value || 0), 0);
+}
+
+function senderAddr(tx) {
+    const v = (tx.vin || [])[0];
+    if (!v) return 'Unknown';
+    if (v.is_coinbase) return 'Coinbase (mining reward)';
+    return v.prevout?.scriptpubkey_address || 'Unknown';
+}
+
+function receiverAddr(tx) {
+    for (const o of (tx.vout || [])) {
+        if (o.scriptpubkey_address) return o.scriptpubkey_address;
+    }
+    return 'Unknown';
+}
+
+/* ── Data fetching ─────────────────────────────────── */
+
+async function getPrice() {
+    try {
+        const d = await apiFetch('/api/v1/prices');
+        btcPrice = d.USD;
+        document.getElementById('statPrice').textContent =
+            '$' + btcPrice.toLocaleString('en-US');
+    } catch { /* keep last known price */ }
+}
+
+async function getMempoolWhales() {
+    const basic    = await apiFetch('/api/mempool/recent');
+    const minSats  = WHALE_BTC * SATS;
+    const candidates = basic.filter(t => (t.value || 0) >= minSats);
+    const details  = await Promise.all(
+        candidates.map(t => apiFetch(`/api/tx/${t.txid}`).catch(() => null))
+    );
+    return details.filter(Boolean).map(tx => ({ ...tx, _src: 'mempool' }));
+}
+
+async function getBlockWhales() {
+    const blocks  = await apiFetch('/api/blocks');
+    const blockId = blocks?.[0]?.id;
+    if (!blockId) return [];
+    const txs     = await apiFetch(`/api/block/${blockId}/txs/0`);
+    const minSats = WHALE_BTC * SATS;
+    return txs
+        .filter(tx => txValueSats(tx) >= minSats)
+        .map(tx => ({ ...tx, _src: 'block' }));
+}
+
+async function fetchFreshWhales() {
+    const [memRes, blkRes] = await Promise.allSettled([
+        getMempoolWhales(),
+        getBlockWhales()
+    ]);
+    const combined = [
+        ...(memRes.status === 'fulfilled' ? memRes.value : []),
+        ...(blkRes.status === 'fulfilled' ? blkRes.value : []),
+    ];
+    const seen   = new Set();
+    return combined.filter(tx => {
+        if (seen.has(tx.txid)) return false;
+        seen.add(tx.txid);
+        return true;
+    });
+}
+
+/* ── Sound alerts ───────────────────────────────────── */
+
+let audioCtx     = null;
+let soundEnabled = false;
+const alertedTxids = new Set();
+
+function getAudioCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    return audioCtx;
+}
+
+function playWhaleSound(isMega) {
+    try {
+        const ctx = getAudioCtx();
+        if (ctx.state === 'suspended') ctx.resume();
+        const now = ctx.currentTime;
+
+        if (isMega) {
+            // ── Deep, dramatic mega-whale call (~2.6 s) ──
+            const dur    = 2.6;
+            const osc    = ctx.createOscillator();
+            const filter = ctx.createBiquadFilter();
+            const gain   = ctx.createGain();
+
+            osc.type = 'sine';
+            filter.type = 'lowpass'; filter.frequency.value = 620; filter.Q.value = 3.5;
+
+            // Frequency arc: 280 → 38 → 90 → 55 Hz
+            osc.frequency.setValueAtTime(280, now);
+            osc.frequency.exponentialRampToValueAtTime(38,  now + 1.0);
+            osc.frequency.exponentialRampToValueAtTime(90,  now + 2.0);
+            osc.frequency.exponentialRampToValueAtTime(55,  now + dur);
+
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(0.45, now + 0.12);
+            gain.gain.setValueAtTime(0.45, now + 2.2);
+            gain.gain.linearRampToValueAtTime(0, now + dur);
+
+            osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+            osc.start(now); osc.stop(now + dur);
+
+            // Harmonic overtone (1.5×) for depth
+            const osc2  = ctx.createOscillator();
+            const gain2 = ctx.createGain();
+            osc2.type = 'sine';
+            osc2.frequency.setValueAtTime(420, now);
+            osc2.frequency.exponentialRampToValueAtTime(57,  now + 1.0);
+            osc2.frequency.exponentialRampToValueAtTime(135, now + 2.0);
+            osc2.frequency.exponentialRampToValueAtTime(82,  now + dur);
+            gain2.gain.setValueAtTime(0, now);
+            gain2.gain.linearRampToValueAtTime(0.18, now + 0.12);
+            gain2.gain.setValueAtTime(0.18, now + 2.2);
+            gain2.gain.linearRampToValueAtTime(0, now + dur);
+            osc2.connect(gain2); gain2.connect(ctx.destination);
+            osc2.start(now); osc2.stop(now + dur);
+
+        } else {
+            // ── Normal whale alert (~1.5 s) ──
+            const dur    = 1.5;
+            const osc    = ctx.createOscillator();
+            const filter = ctx.createBiquadFilter();
+            const gain   = ctx.createGain();
+
+            osc.type = 'sine';
+            filter.type = 'lowpass'; filter.frequency.value = 500; filter.Q.value = 2;
+
+            // Frequency arc: 160 → 65 → 100 → 75 Hz
+            osc.frequency.setValueAtTime(160, now);
+            osc.frequency.exponentialRampToValueAtTime(65,  now + 0.55);
+            osc.frequency.exponentialRampToValueAtTime(100, now + 1.1);
+            osc.frequency.exponentialRampToValueAtTime(75,  now + dur);
+
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(0.28, now + 0.07);
+            gain.gain.setValueAtTime(0.28, now + 1.2);
+            gain.gain.linearRampToValueAtTime(0, now + dur);
+
+            osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+            osc.start(now); osc.stop(now + dur);
+        }
+    } catch (e) { console.warn('Sound error:', e); }
+}
+
+function checkNewWhales(txs) {
+    if (!soundEnabled) return;
+    let hasMega = false, hasNormal = false;
+    for (const tx of txs) {
+        if (alertedTxids.has(tx.txid)) continue;
+        alertedTxids.add(tx.txid);
+        const btc = txValueSats(tx) / SATS;
+        if      (btc >= MEGA_BTC)  hasMega   = true;
+        else if (btc >= WHALE_BTC) hasNormal = true;
+    }
+    if      (hasMega)   playWhaleSound(true);
+    else if (hasNormal) playWhaleSound(false);
+}
+
+function toggleSound() {
+    soundEnabled = !soundEnabled;
+    const btn  = document.getElementById('soundToggle');
+    const icon = document.getElementById('soundIcon');
+    const text = document.getElementById('soundText');
+    if (soundEnabled) {
+        btn.classList.add('on');
+        icon.textContent = '🔊';
+        text.textContent = 'Sound ON';
+        playWhaleSound(false); // audible confirmation
+    } else {
+        btn.classList.remove('on');
+        icon.textContent = '🔇';
+        text.textContent = 'Sound OFF';
+    }
+}
+
+/* ── Dormant whale detection ────────────────────────── */
+
+// Cache: inputTxid → block_time (seconds) | null
+const dormancyCache = new Map();
+
+async function _fetchInputAge(inputTxid) {
+    if (dormancyCache.has(inputTxid)) return;
+    try {
+        const d = await apiFetch(`/api/tx/${inputTxid}`);
+        dormancyCache.set(inputTxid, d.status?.block_time ?? null);
+    } catch {
+        dormancyCache.set(inputTxid, null);
+    }
+}
+
+// Computes and attaches tx._dormancyYears in-place for each tx that lacks it
+async function prefetchDormancy(txs) {
+    const nowSecs = Date.now() / 1000;
+    const toFetch = [];
+
+    for (const tx of txs) {
+        if (tx._dormancyYears !== undefined) continue; // already resolved
+        const inp = (tx.vin || [])[0];
+        if (!inp || inp.is_coinbase || !inp.txid) { tx._dormancyYears = 0; continue; }
+        if (!dormancyCache.has(inp.txid)) toFetch.push(inp.txid);
+    }
+
+    // Batch-fetch up to 20 new input txs per cycle (4 at a time)
+    const unique = [...new Set(toFetch)].slice(0, 20);
+    for (let i = 0; i < unique.length; i += 4) {
+        await Promise.allSettled(unique.slice(i, i + 4).map(_fetchInputAge));
+    }
+
+    // Attach result to each tx
+    for (const tx of txs) {
+        if (tx._dormancyYears !== undefined) continue;
+        const inp = (tx.vin || [])[0];
+        if (!inp || inp.is_coinbase || !inp.txid) { tx._dormancyYears = 0; continue; }
+        const bt = dormancyCache.get(inp.txid);
+        tx._dormancyYears = bt ? (nowSecs - bt) / (365.25 * 24 * 3600) : 0;
+    }
+}
+
+// Returns years (float) if ≥ 1 year dormant, otherwise null
+function getDormancyYears(tx) {
+    const y = tx._dormancyYears;
+    return (y && y >= 1) ? y : null;
+}
+
+/* ── Exchange detection ─────────────────────────────── */
+
+// Well-known exchange wallet addresses (publicly documented cold/hot wallets)
+const KNOWN_EXCHANGES = {
+    /* Binance */
+    '34xp4vRoCGJym3xR7yCVPFHoCNxv4Twseo':                              'Binance',
+    'bc1qgdjqv0av3q56jvd82tkdjpy7gdp9ut8tlqmgrpmv24sq90ecnvqqjwvw97':  'Binance',
+    '1NDyJtNTjmwk5xPNhjgAMu4HDHigtobu1s':                              'Binance',
+    'bc1qazcm763858nkj2dj986etajv6wquslv8uxwczt':                       'Binance',
+    /* Coinbase */
+    '3Kzh9qAqVWQhEsfQz7zEQL1EuSx5tyNLNS':                              'Coinbase',
+    '3LQUu4v9z6KNch71j7kbj8GPeAGUo1FW6a':                              'Coinbase',
+    'bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2':                       'Coinbase',
+    /* Kraken */
+    '3EhjYBM3uAmJUWpbFqWLgkdmMjBUqyUygC':                              'Kraken',
+    'bc1qet4hjhlevq2at5sqm9yntp7scm2xa44qhkn3gx':                       'Kraken',
+    /* Bitfinex */
+    '3D2oetdNuZUqQHPJmcMDDHYoqkyNVsFk9r':                              'Bitfinex',
+    '1KYiKJEfdJtap9QX2v9BXJMpz2SfU4pgZw':                              'Bitfinex',
+    /* Bitstamp */
+    '1LKeey1MfjLmwAASsVtTkvE2a9if6ev3LH':                              'Bitstamp',
+    /* Huobi / HTX */
+    '1HckjUpRGcrrRAtFaaCAUaGjoPkge3pJMb':                              'Huobi',
+    /* OKX */
+    '3LCGsSmfr24demGvriN4e3ft8wEcDuHFqh':                              'OKX',
+    /* Gemini */
+    '393R2MkBYRjQwEEhFXYzGvPqGsWBCGF9Na':                              'Gemini',
+    /* Bybit */
+    'bc1qll4vs3ye5z9q5xtspk9pgahf4kuf05qjqgqjlj':                       'Bybit',
+};
+
+// Per-session cache of mempool.space API label results
+const labelCache = new Map();
+
+// Fetch label from mempool.space for a single address (writes into labelCache)
+async function _fetchApiLabel(addr) {
+    try {
+        const d = await apiFetch(`/api/address/${addr}`);
+        // mempool.space may expose label/entity for known wallets
+        labelCache.set(addr, d.label ?? d.entity?.name ?? null);
+    } catch {
+        labelCache.set(addr, null);
+    }
+}
+
+// Pre-fetch API labels for all unknown addresses in a batch before rendering
+async function prefetchLabels(txs) {
+    const pending = new Set();
+    for (const tx of txs) {
+        for (const addr of [senderAddr(tx), receiverAddr(tx)]) {
+            if (addr && addr !== 'Unknown' && !addr.startsWith('Coinbase (')
+                    && !KNOWN_EXCHANGES[addr] && !labelCache.has(addr)) {
+                pending.add(addr);
+            }
+        }
+    }
+    const list = [...pending].slice(0, 30); // cap to avoid hammering the API
+    for (let i = 0; i < list.length; i += 4) {
+        await Promise.allSettled(list.slice(i, i + 4).map(_fetchApiLabel));
+    }
+}
+
+// Synchronous label lookup — call after prefetchLabels has resolved
+function getLabel(addr) {
+    if (!addr || addr === 'Unknown' || addr.startsWith('Coinbase (')) return null;
+    return KNOWN_EXCHANGES[addr] ?? labelCache.get(addr) ?? null;
+}
+
+// Build the HTML for a sender/receiver address field
+function addrDisplay(addr) {
+    if (!addr || addr === 'Unknown') {
+        return `<span class="unknown-label">Unknown Wallet</span>`;
+    }
+    if (addr.startsWith('Coinbase (')) {
+        return `<span title="${addr}">${addr}</span>`;
+    }
+    const label = getLabel(addr);
+    const badge = label
+        ? `<span class="exchange-label">${label}</span>`
+        : `<span class="unknown-label">Unknown Wallet</span>`;
+    return `${badge}<span title="${addr}">${fmtAddr(addr)}</span>`;
+}
+
+function dormancyBannerHtml(tx, btc) {
+    const years = getDormancyYears(tx);
+    if (!years) return '';
+    const y = years.toFixed(1);
+    let cls, title;
+    if      (years >= 5) { cls = 'dormant-5y'; title = 'Ancient Whale Awakened'; }
+    else if (years >= 3) { cls = 'dormant-3y'; title = 'Long Dormant Whale';      }
+    else                 { cls = 'dormant-1y'; title = 'Dormant Whale Awakened';  }
+    return `
+      <div class="dormant-banner ${cls}">
+        <span class="dormant-icon">🐋</span>
+        <div>
+          <div class="dormant-title">${title}</div>
+          <div class="dormant-sub">&#x20BF;\u2009${fmtBtc(btc)} moved after ${y} years of inactivity</div>
+        </div>
+      </div>`;
+}
+
+/* ── Direction detection ────────────────────────────── */
+
+function getFlow(from, to) {
+    function classify(addr) {
+        if (!addr || addr === 'Unknown')        return { type: 'unknown',  name: 'Unknown' };
+        if (addr.startsWith('Coinbase ('))      return { type: 'coinbase', name: 'Mining'  };
+        const label = getLabel(addr);
+        return label
+            ? { type: 'exchange', name: label    }
+            : { type: 'wallet',   name: 'Wallet' };
+    }
+    return { src: classify(from), dst: classify(to) };
+}
+
+function dirHtml(from, to) {
+    const { src, dst } = getFlow(from, to);
+    return `
+      <div class="dir-strip">
+        <div class="dir-node dir-node--${src.type}">${src.name}</div>
+        <div class="dir-sep"></div>
+        <div class="dir-node dir-node--${dst.type}">${dst.name}</div>
+      </div>`;
+}
+
+/* ── Rendering ─────────────────────────────────────── */
+
+function makeCard(tx) {
+    const sats      = txValueSats(tx);
+    const btc       = sats / SATS;
+    const usd       = btcPrice ? btc * btcPrice : null;
+    const isMega    = btc >= MEGA_BTC;
+    const from      = senderAddr(tx);
+    const to        = receiverAddr(tx);
+    const blockTs   = tx.status?.block_time;
+    const foundAt   = tx._foundAt;
+
+    const card = document.createElement('div');
+    card.className = 'tx-card' + (isMega ? ' mega' : '');
+
+    card.innerHTML = `
+      <div class="card-top">
+        <div>
+          <div class="amount-btc">₿ ${fmtBtc(btc)}</div>
+          <div class="amount-usd">${usd ? fmtUsd(usd) : 'Price unavailable'}</div>
+        </div>
+        <div style="text-align:right">
+          <span class="badge ${isMega ? 'badge-mega' : 'badge-normal'}">
+            ${isMega ? '🐋 HUMPBACK WHALE' : '🐋 WHALE'}
+          </span>
+          <div class="conf-tag">
+            ${tx._src === 'mempool' ? '⏳ Unconfirmed' : '✅ Confirmed'}
+          </div>
+        </div>
+      </div>
+      ${dirHtml(from, to)}
+      ${dormancyBannerHtml(tx, btc)}
+      <div class="fields">
+        <div>
+          <div class="field-label">From</div>
+          <div class="field-val">${addrDisplay(from)}</div>
+        </div>
+        <div>
+          <div class="field-label">To</div>
+          <div class="field-val">${addrDisplay(to)}</div>
+        </div>
+        <div>
+          <div class="field-label">TX Hash</div>
+          <div class="field-val">
+            <a href="${BASE}/tx/${tx.txid}" target="_blank" rel="noopener"
+               title="${tx.txid}">${tx.txid.slice(0, 14)}…${tx.txid.slice(-8)}</a>
+          </div>
+        </div>
+        <div>
+          <div class="field-label">Block Time</div>
+          <div class="field-val ts">${fmtTime(blockTs)}</div>
+        </div>
+        <div style="grid-column:1/-1">
+          <div class="field-label">Detected</div>
+          <div class="field-val detected-val"
+               title="${foundAt ? fullDateTime(foundAt) : ''}">
+            ${foundAt ? relTime(foundAt) : '—'}
+          </div>
+        </div>
+      </div>`;
+
+    return card;
+}
+
+function updateWhaleStats(txs) {
+    const todayStart = (() => { const d = new Date(); d.setHours(0,0,0,0); return d.getTime(); })();
+    const todayTxs   = txs.filter(tx => tx._foundAt && tx._foundAt >= todayStart);
+
+    let biggestBtc   = 0;
+    let totalTodayBtc = 0;
+
+    for (const tx of txs) {
+        const btc = txValueSats(tx) / SATS;
+        if (btc > biggestBtc) biggestBtc = btc;
+    }
+    for (const tx of todayTxs) {
+        totalTodayBtc += txValueSats(tx) / SATS;
+    }
+
+    document.getElementById('wsWhalesDay').textContent =
+        todayTxs.length > 0 ? todayTxs.length : '0';
+    document.getElementById('wsBiggest').textContent =
+        biggestBtc > 0 ? '₿\u2009' + fmtBtc(biggestBtc) : '—';
+    document.getElementById('wsTotal').textContent =
+        totalTodayBtc > 0 ? '₿\u2009' + fmtBtc(totalTodayBtc) : '—';
+}
+
+function renderFeed(txs) {
+    const feed = document.getElementById('feed');
+    const frag = document.createDocumentFragment();
+
+    const meta = document.createElement('div');
+    meta.className = 'feed-meta';
+    meta.textContent =
+        `Transactions ≥ ${WHALE_BTC} BTC  ·  ${txs.length} whale${txs.length !== 1 ? 's' : ''} in the last 24h`;
+    frag.appendChild(meta);
+
+    txs.forEach(tx => frag.appendChild(makeCard(tx)));
+
+    feed.innerHTML = '';
+    feed.appendChild(frag);
+    document.getElementById('statCount').textContent = txs.length;
+    updateWhaleStats(txs);
+    checkNewWhales(txs);
+}
+
+function showLoading() {
+    document.getElementById('feed').innerHTML = `
+      <div class="loading-wrap">
+        <div class="spinner"></div>
+        <div class="loading-text">Scanning the blockchain for whales…</div>
+      </div>`;
+}
+
+function showError(msg) {
+    document.getElementById('feed').innerHTML =
+        `<div class="error-box">⚠️ ${msg}<br><small>Will retry automatically.</small></div>`;
+}
+
+function showEmpty() {
+    document.getElementById('feed').innerHTML = `
+      <div class="empty-wrap">
+        <span class="empty-emoji">🐋</span>
+        <div class="empty-title">No whale transactions in the last 24h</div>
+        <div class="empty-sub">Watching for transactions ≥ ${WHALE_BTC} BTC…</div>
+      </div>`;
+}
+
+/* ── Main refresh loop ─────────────────────────────── */
+
+async function refresh(first = false) {
+    // On first load: show cached data immediately so the page isn't blank
+    const stored = loadStored();
+    if (first) {
+        if (stored.length > 0) {
+            await Promise.all([prefetchLabels(stored), prefetchDormancy(stored)]);
+            renderFeed([...stored].sort((a, b) => (b._foundAt || 0) - (a._foundAt || 0)));
+        } else {
+            showLoading();
+        }
+    }
+
+    try {
+        await getPrice();
+        const fresh  = await fetchFreshWhales();
+        const merged = mergeTxs(stored, fresh);
+
+        // Newest detections first
+        merged.sort((a, b) => (b._foundAt || 0) - (a._foundAt || 0));
+
+        await Promise.all([prefetchLabels(merged), prefetchDormancy(merged)]);
+        saveStored(merged);
+
+        document.getElementById('statTime').textContent =
+            new Date().toLocaleTimeString('en-US', {
+                hour: '2-digit', minute: '2-digit', second: '2-digit'
+            });
+
+        if (merged.length === 0) { showEmpty(); return; }
+
+        renderFeed(merged);
+
+    } catch (err) {
+        console.error(err);
+        // On API error: keep showing stored data; just log the error
+        if (stored.length > 0) {
+            await Promise.all([prefetchLabels(stored), prefetchDormancy(stored)]);
+            renderFeed([...stored].sort((a, b) => (b._foundAt || 0) - (a._foundAt || 0)));
+        } else {
+            showError(err.message || 'Unknown error while fetching data.');
+        }
+        document.getElementById('statTime').textContent = 'Fetch error';
+    }
+}
+
+/* ── Countdown progress bar ────────────────────────── */
+
+function startCountdown() {
+    if (cdTimer) clearInterval(cdTimer);
+    cdValue = INTERVAL_MS / 1000;
+    const fill = document.getElementById('progressFill');
+    const cd   = document.getElementById('countdown');
+    fill.style.width = '100%';
+
+    cdTimer = setInterval(() => {
+        cdValue = Math.max(0, cdValue - 1);
+        cd.textContent = cdValue + 's';
+        fill.style.width = (cdValue / (INTERVAL_MS / 1000) * 100) + '%';
+        if (cdValue === 0) clearInterval(cdTimer);
+    }, 1000);
+}
+
+/* ── Boot ──────────────────────────────────────────── */
+
+(async function init() {
+    // Pre-seed alertedTxids so cached whales never trigger sounds on load
+    for (const tx of loadStored()) alertedTxids.add(tx.txid);
+
+    await refresh(true);
+    startCountdown();
+
+    setInterval(async () => {
+        await refresh(false);
+        startCountdown();
+    }, INTERVAL_MS);
+})();
+</script>
+</body>
+</html>
