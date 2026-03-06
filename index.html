@@ -154,6 +154,120 @@
             .wsc-icon { font-size: 1.5rem; }
         }
 
+        /* ── Whale of the Day ── */
+        .wotd-wrap {
+            max-width: 860px;
+            margin: 1rem auto 0;
+            padding: 0 1rem;
+        }
+
+        .wotd-card {
+            background: #0a0d18;
+            border: 1px solid #2a2010;
+            border-radius: 14px;
+            padding: 1.1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+
+        .wotd-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(251,191,36,0.05) 0%, transparent 55%);
+            pointer-events: none;
+        }
+
+        .wotd-card.active {
+            border-color: rgba(251,191,36,0.35);
+        }
+
+        .wotd-card.active:hover {
+            border-color: rgba(251,191,36,0.55);
+        }
+
+        .wotd-badge {
+            font-size: 0.6rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #fbbf24;
+            background: rgba(251,191,36,0.1);
+            border: 1px solid rgba(251,191,36,0.25);
+            border-radius: 20px;
+            padding: 0.22rem 0.7rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .wotd-icon {
+            font-size: 2.2rem;
+            line-height: 1;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 8px rgba(251,191,36,0.3));
+        }
+
+        .wotd-body { flex: 1; min-width: 0; }
+
+        .wotd-tier {
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #fbbf24;
+            margin-bottom: 0.2rem;
+        }
+
+        .wotd-amount {
+            font-size: 1.5rem;
+            font-weight: 900;
+            font-family: 'Courier New', monospace;
+            color: #ffd166;
+            line-height: 1.1;
+        }
+
+        .wotd-usd {
+            font-size: 0.8rem;
+            color: #6a5820;
+            font-family: 'Courier New', monospace;
+            margin-top: 0.1rem;
+        }
+
+        .wotd-meta {
+            font-size: 0.65rem;
+            color: #3a3a55;
+            margin-top: 0.35rem;
+            letter-spacing: 0.03em;
+        }
+
+        .wotd-empty {
+            font-size: 0.75rem;
+            color: #2a2a42;
+            font-style: italic;
+        }
+
+        .wotd-link {
+            display: none;
+            align-items: center;
+            gap: 0.35rem;
+            margin-top: 0.55rem;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            color: #4a4a68;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .wotd-card.active .wotd-link { display: inline-flex; }
+        .wotd-link:hover { color: #fbbf24; }
+
         /* ── Stats bar ── */
         .stats-bar {
             display: flex;
@@ -188,6 +302,17 @@
             color: #f7931a;
         }
 
+        .stat-value--timer {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            letter-spacing: 0.05em;
+            color: #38bdf8;
+        }
+
+        .stat--timer {
+            border-color: rgba(56,189,248,0.2);
+        }
+
         /* ── Progress bar ── */
         .refresh-strip {
             max-width: 860px;
@@ -215,10 +340,58 @@
         }
 
         /* ── Feed ── */
-        .feed {
+        .feed-section {
             max-width: 860px;
-            margin: 0 auto;
-            padding: 0 1rem 4rem;
+            margin: 0 auto 2rem;
+            padding: 0 1rem;
+        }
+
+        .feed-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            padding: 0 0.1rem;
+        }
+
+        .feed-section-title {
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #f7931a;
+        }
+
+        .feed-scroll-hint {
+            font-size: 0.6rem;
+            color: #2a2a45;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .feed-wrap {
+            height: 480px;
+            overflow-y: auto;
+            border: 1px solid #1c1c30;
+            border-radius: 14px;
+            background: #07070f;
+            padding: 1rem 1rem 0.5rem;
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar */
+        .feed-wrap::-webkit-scrollbar { width: 6px; }
+        .feed-wrap::-webkit-scrollbar-track { background: transparent; }
+        .feed-wrap::-webkit-scrollbar-thumb {
+            background: #1e1e35;
+            border-radius: 3px;
+        }
+        .feed-wrap::-webkit-scrollbar-thumb:hover { background: #f7931a44; }
+
+        .feed {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
         }
 
         .feed-meta {
@@ -317,21 +490,46 @@
             border-radius: 14px 0 0 14px;
         }
 
-        /* mega whale variant */
-        .tx-card.mega {
+        /* ── Tier card variants ── */
+
+        /* Dolphin: teal accent */
+        .tx-card.tier-dolphin::before { background: #2dd4bf; }
+        .tx-card.tier-dolphin .amount-btc { color: #2dd4bf; }
+
+        /* Whale: default orange — no overrides needed */
+
+        /* Humpback: red accent + pulse */
+        .tx-card.tier-humpback {
             background: #130e0e;
             border-color: rgba(239,68,68,0.35);
         }
-
-        .tx-card.mega::before {
+        .tx-card.tier-humpback::before {
             background: #ef4444;
             box-shadow: 0 0 14px rgba(239,68,68,0.7);
             animation: redPulse 1.6s ease-in-out infinite;
         }
+        .tx-card.tier-humpback .amount-btc { color: #ef4444; }
 
         @keyframes redPulse {
             0%, 100% { box-shadow: 0 0 8px rgba(239,68,68,0.5); }
             50%       { box-shadow: 0 0 22px rgba(239,68,68,0.9); }
+        }
+
+        /* Blue Whale: purple accent + stronger pulse */
+        .tx-card.tier-blue-whale {
+            background: #0c0c18;
+            border-color: rgba(129,140,248,0.4);
+        }
+        .tx-card.tier-blue-whale::before {
+            background: #818cf8;
+            box-shadow: 0 0 16px rgba(129,140,248,0.8);
+            animation: purplePulse 1.2s ease-in-out infinite;
+        }
+        .tx-card.tier-blue-whale .amount-btc { color: #818cf8; }
+
+        @keyframes purplePulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(129,140,248,0.55); }
+            50%       { box-shadow: 0 0 28px rgba(129,140,248,1); }
         }
 
         @keyframes slideDown {
@@ -356,8 +554,6 @@
             line-height: 1.1;
         }
 
-        .tx-card.mega .amount-btc { color: #ef4444; }
-
         .amount-usd {
             font-size: 0.85rem;
             color: #6b6b8a;
@@ -374,22 +570,35 @@
             text-transform: uppercase;
         }
 
-        .badge-normal {
+        .badge-dolphin {
+            background: rgba(45,212,191,0.1);
+            border: 1px solid rgba(45,212,191,0.3);
+            color: #2dd4bf;
+        }
+
+        .badge-whale {
             background: rgba(247,147,26,0.12);
             border: 1px solid rgba(247,147,26,0.3);
             color: #f7931a;
         }
 
-        .badge-mega {
+        .badge-humpback {
             background: rgba(239,68,68,0.12);
             border: 1px solid rgba(239,68,68,0.35);
             color: #ef4444;
             animation: badgePulse 1.6s ease-in-out infinite;
         }
 
+        .badge-blue-whale {
+            background: rgba(129,140,248,0.14);
+            border: 1px solid rgba(129,140,248,0.45);
+            color: #818cf8;
+            animation: badgePulse 1.2s ease-in-out infinite;
+        }
+
         @keyframes badgePulse {
             0%, 100% { opacity: 1; }
-            50%       { opacity: 0.55; }
+            50%       { opacity: 0.5; }
         }
 
         .conf-tag {
@@ -399,7 +608,119 @@
             text-align: right;
         }
 
-        /* Card fields grid */
+        /* ── Transaction Summary ── */
+        .tx-summary-label {
+            font-size: 0.58rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #2a2a42;
+            margin-bottom: 0.7rem;
+        }
+
+        .tx-addr-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+            margin-bottom: 0.8rem;
+        }
+
+        @media (max-width: 420px) { .tx-addr-row { grid-template-columns: 1fr; } }
+
+        .tx-addr-box {
+            background: #07070f;
+            border: 1px solid #12121e;
+            border-radius: 8px;
+            padding: 0.6rem 0.75rem;
+        }
+
+        .tx-addr-box-label {
+            font-size: 0.55rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #2a2a42;
+            margin-bottom: 0.25rem;
+        }
+
+        .tx-addr-box-val {
+            font-size: 0.72rem;
+            font-family: 'Courier New', monospace;
+            color: #7070a0;
+            cursor: default;
+        }
+
+        .tx-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        @media (max-width: 480px) { .tx-meta-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        .tx-meta-item {
+            background: #07070f;
+            border: 1px solid #12121e;
+            border-radius: 8px;
+            padding: 0.55rem 0.65rem;
+        }
+
+        .tx-meta-item-label {
+            font-size: 0.54rem;
+            font-weight: 700;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            color: #2a2a42;
+            margin-bottom: 0.22rem;
+        }
+
+        .tx-meta-item-val {
+            font-size: 0.74rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            color: #8080a0;
+            white-space: nowrap;
+        }
+
+        .tx-hash-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: #07070f;
+            border: 1px solid #12121e;
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+        }
+
+        .tx-hash-label {
+            font-size: 0.54rem;
+            font-weight: 700;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            color: #2a2a42;
+            white-space: nowrap;
+        }
+
+        .tx-hash-val {
+            font-size: 0.7rem;
+            font-family: 'Courier New', monospace;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .tx-hash-val a {
+            color: #4a6080;
+            text-decoration: none;
+            transition: color 0.15s;
+        }
+
+        .tx-hash-val a:hover { color: #60a5fa; text-decoration: underline; }
+
+        /* Card fields grid — kept for fallback compatibility */
         .fields {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -518,8 +839,8 @@
         .dormant-banner {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 0.55rem 0.9rem;
+            gap: 0.85rem;
+            padding: 0.65rem 1rem;
             border-radius: 10px;
             margin-bottom: 1rem;
         }
@@ -532,41 +853,62 @@
         .dormant-1y .dormant-sub   { color: #7a6520; }
 
         .dormant-banner.dormant-3y {
-            background: rgba(249,115,22,0.06);
-            border: 1px solid rgba(249,115,22,0.28);
+            background: rgba(249,115,22,0.07);
+            border: 1px solid rgba(249,115,22,0.32);
         }
         .dormant-3y .dormant-title { color: #f97316; }
         .dormant-3y .dormant-sub   { color: #7a4018; }
 
         .dormant-banner.dormant-5y {
-            background: rgba(239,68,68,0.06);
-            border: 1px solid rgba(239,68,68,0.3);
+            background: rgba(239,68,68,0.07);
+            border: 1px solid rgba(239,68,68,0.35);
             animation: dormantPulse 2.5s ease-in-out infinite;
         }
         @keyframes dormantPulse {
-            0%, 100% { border-color: rgba(239,68,68,0.3); }
-            50%       { border-color: rgba(239,68,68,0.75); box-shadow: 0 0 10px rgba(239,68,68,0.12); }
+            0%, 100% { border-color: rgba(239,68,68,0.35); box-shadow: none; }
+            50%       { border-color: rgba(239,68,68,0.8);  box-shadow: 0 0 12px rgba(239,68,68,0.14); }
         }
         .dormant-5y .dormant-title { color: #ef4444; }
         .dormant-5y .dormant-sub   { color: #7a2828; }
 
+        .dormant-banner.dormant-10y {
+            background: rgba(168,85,247,0.09);
+            border: 1px solid rgba(168,85,247,0.45);
+            animation: legendaryPulse 2s ease-in-out infinite;
+        }
+        @keyframes legendaryPulse {
+            0%, 100% { border-color: rgba(168,85,247,0.45); box-shadow: none; }
+            50%       { border-color: rgba(168,85,247,0.95); box-shadow: 0 0 18px rgba(168,85,247,0.2); }
+        }
+        .dormant-10y .dormant-title { color: #c084fc; }
+        .dormant-10y .dormant-sub   { color: #6b3a8a; }
+
         .dormant-icon {
-            font-size: 1.45rem;
+            font-size: 1.6rem;
             flex-shrink: 0;
             line-height: 1;
         }
 
+        .dormant-body { display: flex; flex-direction: column; gap: 0.15rem; }
+
         .dormant-title {
-            font-size: 0.68rem;
+            font-size: 0.7rem;
             font-weight: 800;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.07em;
             text-transform: uppercase;
             font-family: 'Segoe UI', system-ui, sans-serif;
         }
 
+        .dormant-amount {
+            font-size: 0.82rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            color: #c0c0d8;
+        }
+
         .dormant-sub {
-            font-size: 0.67rem;
-            margin-top: 0.15rem;
+            font-size: 0.65rem;
+            margin-top: 0.05rem;
             font-family: 'Courier New', monospace;
         }
 
@@ -605,6 +947,48 @@
             vertical-align: middle;
         }
 
+        /* ── OPNET logo ── */
+        .opnet-logo {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: #0d1120;
+            border: 1px solid #1c1c30;
+            border-radius: 10px;
+            padding: 0.42rem 0.85rem;
+            text-decoration: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .opnet-logo:hover {
+            border-color: rgba(247,147,26,0.4);
+            background: rgba(247,147,26,0.05);
+        }
+
+        .opnet-logo-text {
+            font-size: 0.72rem;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #f7931a, #ffd166);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .opnet-logo-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #f7931a;
+            flex-shrink: 0;
+            box-shadow: 0 0 6px rgba(247,147,26,0.7);
+        }
+
         /* ── Sound toggle ── */
         .sound-toggle {
             position: fixed;
@@ -641,14 +1025,1292 @@
         }
 
         .sound-toggle .s-icon { font-size: 0.9rem; line-height: 1; }
+
+        /* ── Demo Mode button ── */
+        .demo-btn {
+            position: fixed;
+            top: 3.6rem;
+            right: 1rem;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            gap: 0.38rem;
+            background: #0d1120;
+            border: 1px solid #1c1c30;
+            border-radius: 20px;
+            padding: 0.42rem 0.95rem;
+            color: #424258;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s, background 0.2s;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            user-select: none;
+        }
+
+        .demo-btn:hover {
+            border-color: rgba(247,147,26,0.4);
+            color: #f7931a;
+            background: rgba(247,147,26,0.05);
+        }
+
+        .demo-btn.firing {
+            border-color: rgba(247,147,26,0.6);
+            background: rgba(247,147,26,0.1);
+            color: #f7931a;
+            animation: demoPulse 0.4s ease;
+        }
+
+        @keyframes demoPulse {
+            0%   { transform: scale(1); }
+            50%  { transform: scale(1.06); }
+            100% { transform: scale(1); }
+        }
+
+        /* ── Share on X button ── */
+        .share-x-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 1rem;
+            padding: 0.42rem 0.9rem;
+            background: transparent;
+            border: 1px solid #1e1e32;
+            border-radius: 8px;
+            color: #4a4a68;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            text-decoration: none;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            cursor: pointer;
+            transition: border-color 0.2s, color 0.2s, background 0.2s;
+            user-select: none;
+        }
+
+        .share-x-btn:hover {
+            border-color: rgba(255,255,255,0.2);
+            color: #e0e0e0;
+            background: rgba(255,255,255,0.04);
+        }
+
+        .share-x-btn .x-logo {
+            font-size: 0.75rem;
+            font-weight: 900;
+            font-style: normal;
+            line-height: 1;
+        }
+
+        /* ── Make Your Bitcoin Work ── */
+        .yield-section {
+            max-width: 860px;
+            margin: 3rem auto 2.5rem;
+            padding: 0 1rem;
+        }
+
+        .yield-section-header {
+            text-align: center;
+            margin-bottom: 1.8rem;
+        }
+
+        .yield-section-title {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #f7931a 0%, #ffd166 50%, #f7931a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .yield-section-sub {
+            color: #5a5a7a;
+            font-size: 0.85rem;
+            margin-top: 0.4rem;
+        }
+
+        .yield-calculator {
+            background: #0d1120;
+            border: 1px solid #1c1c30;
+            border-radius: 14px;
+            padding: 1.5rem;
+            margin-bottom: 1.4rem;
+        }
+
+        .yield-calculator-title {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #f7931a;
+            margin-bottom: 1rem;
+        }
+
+        .yield-input-row {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .yield-input {
+            flex: 1;
+            min-width: 140px;
+            background: #070710;
+            border: 1px solid #2a2a48;
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 1rem;
+            font-family: 'Courier New', monospace;
+            padding: 0.6rem 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .yield-input:focus { border-color: #f7931a; }
+
+        .yield-btn {
+            background: linear-gradient(135deg, #f7931a, #ffd166);
+            color: #070710;
+            border: none;
+            border-radius: 8px;
+            padding: 0.62rem 1.4rem;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            white-space: nowrap;
+        }
+
+        .yield-btn:hover  { opacity: 0.88; }
+        .yield-btn:active { transform: scale(0.97); }
+
+        /* Estimated Yearly Earnings card */
+        .yield-earnings-card {
+            background: #0a0f1e;
+            border: 1px solid #1c2a40;
+            border-radius: 14px;
+            padding: 1.5rem;
+            margin-bottom: 1.4rem;
+            display: none;
+        }
+
+        .yield-earnings-card.visible { display: block; }
+
+        .yield-earnings-title {
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #f7931a;
+            margin-bottom: 1rem;
+        }
+
+        .yield-earnings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+            margin-bottom: 1rem;
+        }
+
+        .yield-earning-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #0d1120;
+            border: 1px solid #1c1c30;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .yield-earning-row.best {
+            border-color: rgba(247,147,26,0.5);
+            background: rgba(247,147,26,0.05);
+        }
+
+        .yield-earning-name {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #b0b0c8;
+        }
+
+        .yield-earning-row.best .yield-earning-name { color: #ffd166; }
+
+        .yield-earning-btc {
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            color: #4ade80;
+        }
+
+        .yield-best-label {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #f7931a;
+            padding-top: 0.75rem;
+            border-top: 1px solid #1c1c30;
+        }
+
+        /* Protocol table */
+        .yield-table-wrap {
+            background: #0d1120;
+            border: 1px solid #1c1c30;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .yield-table-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #3a3a58;
+            padding: 1rem 1.2rem 0.5rem;
+        }
+
+        .yield-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .yield-table th {
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #3a3a58;
+            padding: 0.5rem 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid #12121f;
+        }
+
+        .yield-table td {
+            padding: 0.85rem 1.2rem;
+            font-size: 0.82rem;
+            color: #9090b0;
+            border-bottom: 1px solid #0f0f1c;
+        }
+
+        .yield-table tr:last-child td { border-bottom: none; }
+        .yield-table tr:hover td { background: rgba(247,147,26,0.03); }
+
+        .yield-proto-name { font-weight: 600; color: #c0c0e0; }
+
+        .yield-apy {
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            color: #4ade80;
+        }
+
+        .yield-risk {
+            display: inline-block;
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 0.15rem 0.5rem;
+            border-radius: 6px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .yield-risk.low    { background: rgba(74,222,128,0.1);  color: #4ade80; border: 1px solid rgba(74,222,128,0.25); }
+        .yield-risk.medium { background: rgba(251,191,36,0.1);  color: #fbbf24; border: 1px solid rgba(251,191,36,0.25); }
+        .yield-risk.high   { background: rgba(239,68,68,0.1);   color: #ef4444; border: 1px solid rgba(239,68,68,0.25); }
+
+        /* ── OTC Escrow Simulator ── */
+        .escrow-section {
+            max-width: 860px;
+            margin: 0 auto 3rem;
+            padding: 0 1rem;
+        }
+
+        /* ── On-Chain Transparency ── */
+        .transparency-section {
+            max-width: 860px;
+            margin: 0 auto 3rem;
+            padding: 0 1rem;
+        }
+
+        .transparency-card {
+            background: linear-gradient(135deg, rgba(247,147,26,0.06) 0%, rgba(10,10,30,0.9) 100%);
+            border: 1px solid rgba(247,147,26,0.2);
+            border-radius: 16px;
+            padding: 2rem 2.2rem;
+            text-align: center;
+        }
+
+        .transparency-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #f7931a 0%, #ffd166 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .transparency-body {
+            color: #a0a8b8;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 1.2rem;
+        }
+
+        .transparency-source {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(247,147,26,0.1);
+            border: 1px solid rgba(247,147,26,0.25);
+            border-radius: 8px;
+            padding: 0.45rem 1rem;
+            font-size: 0.85rem;
+            color: #f7931a;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .transparency-source:hover {
+            background: rgba(247,147,26,0.18);
+            border-color: rgba(247,147,26,0.5);
+        }
+
+        .escrow-header {
+            text-align: center;
+            margin-bottom: 1.8rem;
+        }
+
+        .escrow-title {
+            font-size: clamp(1.1rem, 2.8vw, 1.7rem);
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 50%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .escrow-subtitle {
+            color: #5a5a7a;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .escrow-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        @media (max-width: 560px) { .escrow-grid { grid-template-columns: 1fr; } }
+
+        .escrow-input-card {
+            background: #0d1120;
+            border: 1px solid #1c1c30;
+            border-radius: 14px;
+            padding: 1.3rem;
+        }
+
+        .escrow-input-label {
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #a78bfa;
+            margin-bottom: 0.75rem;
+        }
+
+        .escrow-field {
+            width: 100%;
+            background: #070710;
+            border: 1px solid #2a2a48;
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 0.95rem;
+            font-family: 'Courier New', monospace;
+            padding: 0.6rem 0.9rem;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        .escrow-field:focus { border-color: #a78bfa; }
+
+        .escrow-type-card {
+            background: #0d1120;
+            border: 1px solid #1c1c30;
+            border-radius: 14px;
+            padding: 1.3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+
+        .escrow-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(167,139,250,0.1);
+            border: 1px solid rgba(167,139,250,0.3);
+            border-radius: 8px;
+            padding: 0.55rem 0.9rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #a78bfa;
+            letter-spacing: 0.04em;
+        }
+
+        .escrow-participants {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .escrow-participant {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            font-size: 0.72rem;
+            color: #5a5a7a;
+        }
+
+        .escrow-participant-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .dot-buyer   { background: #60a5fa; }
+        .dot-seller  { background: #4ade80; }
+        .dot-agent   { background: #a78bfa; }
+
+        .escrow-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #a78bfa, #60a5fa);
+            color: #070710;
+            border: none;
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin-bottom: 1.2rem;
+        }
+
+        .escrow-btn:hover  { opacity: 0.88; }
+        .escrow-btn:active { transform: scale(0.98); }
+
+        /* Result card */
+        .escrow-result {
+            display: none;
+            background: #090b18;
+            border: 1px solid rgba(167,139,250,0.35);
+            border-radius: 14px;
+            padding: 1.5rem;
+            animation: escrowSlide 0.35s ease;
+        }
+
+        .escrow-result.visible { display: block; }
+
+        @keyframes escrowSlide {
+            from { opacity: 0; transform: translateY(-8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .escrow-result-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.3rem;
+        }
+
+        .escrow-result-icon {
+            font-size: 1.8rem;
+            line-height: 1;
+        }
+
+        .escrow-result-title {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: #a78bfa;
+            letter-spacing: 0.05em;
+        }
+
+        .escrow-result-sub {
+            font-size: 0.65rem;
+            color: #3a3a58;
+            margin-top: 0.15rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .escrow-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1.2rem;
+        }
+
+        @media (max-width: 480px) { .escrow-details { grid-template-columns: 1fr; } }
+
+        .escrow-detail-box {
+            background: #0d1120;
+            border: 1px solid #1c1c30;
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+        }
+
+        .escrow-detail-label {
+            font-size: 0.58rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #2a2a42;
+            margin-bottom: 0.3rem;
+        }
+
+        .escrow-detail-val {
+            font-size: 0.88rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            color: #c0c0d8;
+        }
+
+        .escrow-detail-val.purple { color: #a78bfa; }
+        .escrow-detail-val.green  { color: #4ade80; }
+        .escrow-detail-val.blue   { color: #60a5fa; }
+
+        .escrow-sig-row {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.7rem 1rem;
+            background: #0d1120;
+            border: 1px solid #1c1c30;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            font-size: 0.75rem;
+            color: #5a5a7a;
+        }
+
+        .escrow-sig-row .sig-icon { font-size: 1rem; }
+
+        .escrow-address-box {
+            background: #070710;
+            border: 1px solid #12121e;
+            border-radius: 8px;
+            padding: 0.65rem 0.9rem;
+            font-size: 0.68rem;
+            font-family: 'Courier New', monospace;
+            color: #3a3a58;
+            word-break: break-all;
+            margin-top: 1rem;
+        }
+
+        .escrow-address-label {
+            font-size: 0.58rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #2a2a42;
+            margin-bottom: 0.3rem;
+        }
+
+        /* ── DeFi Signal ── */
+        .defi-section {
+            max-width: 860px;
+            margin: 0 auto 3rem;
+            padding: 0 1rem;
+        }
+
+        .defi-header {
+            text-align: center;
+            margin-bottom: 1.8rem;
+        }
+
+        .defi-title {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #4ade80 0%, #22d3ee 50%, #4ade80 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .defi-subtitle {
+            color: #5a5a7a;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .defi-input-card {
+            background: #0d1120;
+            border: 1px solid #1c1c30;
+            border-radius: 14px;
+            padding: 1.5rem;
+            margin-bottom: 1.4rem;
+        }
+
+        .defi-input-card-title {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #4ade80;
+            margin-bottom: 1rem;
+        }
+
+        .defi-risk-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .defi-risk-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #3a3a58;
+            white-space: nowrap;
+        }
+
+        .defi-risk-btns {
+            display: flex;
+            gap: 0.4rem;
+        }
+
+        .defi-risk-btn {
+            background: transparent;
+            border: 1px solid #1e1e32;
+            border-radius: 8px;
+            color: #4a4a68;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            padding: 0.4rem 0.85rem;
+            cursor: pointer;
+            transition: all 0.18s;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        .defi-risk-btn:hover { border-color: #2a2a48; color: #8080a0; }
+
+        .defi-risk-btn.low.active  {
+            border-color: rgba(74,222,128,0.5);
+            background: rgba(74,222,128,0.08);
+            color: #4ade80;
+        }
+
+        .defi-risk-btn.medium.active {
+            border-color: rgba(251,191,36,0.5);
+            background: rgba(251,191,36,0.08);
+            color: #fbbf24;
+        }
+
+        .defi-risk-btn.high.active {
+            border-color: rgba(239,68,68,0.5);
+            background: rgba(239,68,68,0.08);
+            color: #ef4444;
+        }
+
+        .defi-simulate-btn {
+            margin-top: 1.1rem;
+            background: linear-gradient(135deg, #4ade80, #22d3ee);
+            color: #070710;
+            border: none;
+            border-radius: 8px;
+            padding: 0.65rem 1.5rem;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.1s;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        .defi-simulate-btn:hover  { opacity: 0.88; }
+        .defi-simulate-btn:active { transform: scale(0.97); }
+
+        /* Output */
+        .defi-output {
+            display: none;
+            background: #090e1c;
+            border: 1px solid #1a2535;
+            border-radius: 14px;
+            padding: 1.5rem;
+            animation: defiSlideIn 0.35s ease;
+        }
+
+        .defi-output.visible { display: block; }
+
+        @keyframes defiSlideIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .defi-output-title {
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #4ade80;
+            margin-bottom: 1.2rem;
+        }
+
+        .defi-alloc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+            margin-bottom: 1.4rem;
+        }
+
+        .defi-alloc-row {
+            background: #0d1120;
+            border: 1px solid #1c1c30;
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+        }
+
+        .defi-alloc-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .defi-alloc-name {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #c0c0d8;
+        }
+
+        .defi-alloc-pct {
+            font-size: 1rem;
+            font-weight: 800;
+            font-family: 'Courier New', monospace;
+            color: #4ade80;
+        }
+
+        .defi-alloc-bar-track {
+            height: 6px;
+            background: #12121e;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .defi-alloc-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            background: linear-gradient(90deg, #4ade80, #22d3ee);
+            transition: width 0.6s ease;
+        }
+
+        .defi-alloc-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.68rem;
+            font-family: 'Courier New', monospace;
+            color: #3a3a58;
+        }
+
+        .defi-summary {
+            border-top: 1px solid #1c1c30;
+            padding-top: 1.1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.55rem;
+        }
+
+        .defi-summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .defi-summary-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            color: #3a3a58;
+        }
+
+        .defi-summary-val {
+            font-size: 0.9rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            color: #c0c0d8;
+        }
+
+        .defi-summary-val.apy {
+            font-size: 1.1rem;
+            color: #4ade80;
+        }
+
+        /* ── How to Use the DeFi Signal ── */
+        .how-section {
+            max-width: 860px;
+            margin: 0 auto 3rem;
+            padding: 0 1rem;
+        }
+
+        .how-header {
+            text-align: center;
+            margin-bottom: 1.8rem;
+        }
+
+        .how-title {
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #c0c0d8;
+        }
+
+        .how-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .how-step {
+            background: #0d1120;
+            border: 1px solid #1c1c30;
+            border-radius: 14px;
+            padding: 1.4rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            position: relative;
+            transition: border-color 0.2s, transform 0.15s;
+        }
+
+        .how-step:hover {
+            border-color: #2a2a48;
+            transform: translateY(-2px);
+        }
+
+        .how-step-num {
+            font-size: 0.58rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #2a2a42;
+        }
+
+        .how-step-icon {
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+
+        .how-step-title {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #c0c0d8;
+            line-height: 1.3;
+        }
+
+        .how-step-desc {
+            font-size: 0.7rem;
+            color: #4a4a62;
+            line-height: 1.5;
+        }
+
+        /* connector arrow between steps on wide screens */
+        .how-step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -0.85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            color: #2a2a42;
+            z-index: 1;
+        }
+
+        @media (max-width: 600px) {
+            .how-step:not(:last-child)::after { display: none; }
+        }
+
+        /* ── Whale Wave Detector ── */
+        .wave-alert {
+            max-width: 860px;
+            margin: 0 auto 1.2rem;
+            padding: 0 1rem;
+            display: none;
+        }
+
+        .wave-alert.active { display: block; }
+
+        .wave-alert-inner {
+            display: flex;
+            align-items: center;
+            gap: 1.1rem;
+            background: #080e1a;
+            border: 1px solid rgba(56,189,248,0.4);
+            border-radius: 14px;
+            padding: 1.1rem 1.4rem;
+            animation: waveSlideIn 0.4s ease, waveBorder 3s ease-in-out infinite;
+        }
+
+        @keyframes waveSlideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes waveBorder {
+            0%, 100% { border-color: rgba(56,189,248,0.4); box-shadow: none; }
+            50%       { border-color: rgba(56,189,248,0.9); box-shadow: 0 0 22px rgba(56,189,248,0.18); }
+        }
+
+        .wave-emoji {
+            font-size: 2rem;
+            line-height: 1;
+            flex-shrink: 0;
+            animation: waveRock 2s ease-in-out infinite;
+        }
+
+        @keyframes waveRock {
+            0%, 100% { transform: rotate(-8deg); }
+            50%       { transform: rotate(8deg); }
+        }
+
+        .wave-body { flex: 1; }
+
+        .wave-title {
+            font-size: 0.72rem;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #38bdf8;
+            margin-bottom: 0.35rem;
+        }
+
+        .wave-stats {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .wave-stat { display: flex; flex-direction: column; gap: 0.1rem; }
+
+        .wave-stat-val {
+            font-size: 1rem;
+            font-weight: 800;
+            font-family: 'Courier New', monospace;
+            color: #e0f2fe;
+        }
+
+        .wave-stat-label {
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #1e6a8a;
+        }
+
+        .wave-badge {
+            font-size: 0.62rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #38bdf8;
+            background: rgba(56,189,248,0.1);
+            border: 1px solid rgba(56,189,248,0.3);
+            border-radius: 20px;
+            padding: 0.3rem 0.8rem;
+            white-space: nowrap;
+            flex-shrink: 0;
+            align-self: center;
+        }
+
+        /* ── Whale Pressure Indicator ── */
+        .pressure-section {
+            max-width: 860px;
+            margin: 0 auto 1.2rem;
+            padding: 0 1rem;
+        }
+
+        .pressure-card {
+            background: #0d1120;
+            border: 1px solid #1c1c30;
+            border-radius: 14px;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .pressure-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .pressure-title {
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #5a5a7a;
+        }
+
+        .pressure-signal {
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 0.22rem 0.8rem;
+            border-radius: 20px;
+            transition: background 0.4s, color 0.4s, border-color 0.4s;
+        }
+
+        .pressure-signal.bullish {
+            background: rgba(74,222,128,0.1);
+            color: #4ade80;
+            border: 1px solid rgba(74,222,128,0.3);
+        }
+
+        .pressure-signal.bearish {
+            background: rgba(239,68,68,0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239,68,68,0.3);
+        }
+
+        .pressure-signal.neutral {
+            background: rgba(161,161,170,0.08);
+            color: #71717a;
+            border: 1px solid rgba(161,161,170,0.2);
+        }
+
+        .pressure-rows {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        @media (max-width: 480px) { .pressure-rows { grid-template-columns: 1fr; } }
+
+        .pressure-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            background: #07070f;
+            border: 1px solid #12121e;
+            border-radius: 10px;
+            padding: 0.85rem 1rem;
+        }
+
+        .pressure-row-label {
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #3a3a55;
+        }
+
+        .pressure-row-value {
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+        }
+
+        .pressure-row.inflow  .pressure-row-value { color: #ef4444; }
+        .pressure-row.outflow .pressure-row-value { color: #4ade80; }
+
+        .pressure-bar-track {
+            height: 4px;
+            background: #12121e;
+            border-radius: 2px;
+            margin-top: 0.35rem;
+            overflow: hidden;
+        }
+
+        .pressure-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.6s ease;
+        }
+
+        .pressure-row.inflow  .pressure-bar-fill { background: #ef4444; }
+        .pressure-row.outflow .pressure-bar-fill { background: #4ade80; }
+
+        /* ── Bitcoin Price Dashboard ── */
+        .price-dashboard {
+            max-width: 860px;
+            margin: 1.5rem auto 0;
+            padding: 0 1rem;
+        }
+
+        .price-dashboard-inner {
+            background: #0a0d18;
+            border: 1px solid #1c1c30;
+            border-radius: 16px;
+            padding: 1.4rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .pd-left { display: flex; flex-direction: column; gap: 0.25rem; }
+
+        .pd-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #3a3a58;
+        }
+
+        .pd-price {
+            font-size: clamp(1.6rem, 4vw, 2.4rem);
+            font-weight: 900;
+            font-family: 'Courier New', monospace;
+            color: #f7931a;
+            line-height: 1;
+        }
+
+        .pd-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .pd-change {
+            font-size: 1.1rem;
+            font-weight: 800;
+            font-family: 'Courier New', monospace;
+            padding: 0.3rem 0.9rem;
+            border-radius: 8px;
+        }
+
+        .pd-change.positive {
+            color: #4ade80;
+            background: rgba(74,222,128,0.1);
+            border: 1px solid rgba(74,222,128,0.25);
+        }
+
+        .pd-change.negative {
+            color: #ef4444;
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.25);
+        }
+
+        .pd-change.neutral {
+            color: #71717a;
+            background: rgba(113,113,122,0.08);
+            border: 1px solid rgba(113,113,122,0.2);
+        }
+
+        .pd-change-label {
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #2a2a42;
+        }
+
+        .pd-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.3rem;
+        }
+
+        .pd-vol-label {
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #3a3a58;
+        }
+
+        .pd-vol {
+            font-size: 0.88rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            color: #7070a0;
+        }
+
+        .pd-updated {
+            font-size: 0.58rem;
+            color: #2a2a42;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-top: 0.2rem;
+        }
+
+        @media (max-width: 500px) {
+            .price-dashboard-inner { justify-content: center; text-align: center; }
+            .pd-right { align-items: center; }
+        }
     </style>
 </head>
 <body>
+
+<a class="opnet-logo" href="https://vibecode.finance/" target="_blank" rel="noopener" title="OPNET – vibecode.finance">
+    <span class="opnet-logo-dot"></span>
+    <span class="opnet-logo-text">OPNET</span>
+</a>
+
+<button id="demoBtn" class="demo-btn" onclick="runDemo()" title="Fire a demo whale alert">
+    🎬 Demo
+</button>
 
 <button id="soundToggle" class="sound-toggle" onclick="toggleSound()" title="Toggle whale sound alerts">
     <span class="s-icon" id="soundIcon">🔇</span>
     <span id="soundText">Sound OFF</span>
 </button>
+
+<div class="price-dashboard">
+    <div class="price-dashboard-inner">
+        <div class="pd-left">
+            <span class="pd-label">₿ Bitcoin / USD</span>
+            <span class="pd-price" id="pdPrice">—</span>
+        </div>
+        <div class="pd-center">
+            <span class="pd-change neutral" id="pdChange">— %</span>
+            <span class="pd-change-label">24h Change</span>
+        </div>
+        <div class="pd-right">
+            <span class="pd-vol-label">24h Volume</span>
+            <span class="pd-vol" id="pdVol">—</span>
+            <span class="pd-updated">Updated <span id="pdTime">—</span></span>
+        </div>
+    </div>
+</div>
 
 <header class="header">
     <span class="whale-icon">🐋</span>
@@ -681,6 +2343,22 @@
     </div>
 </div>
 
+<div class="wotd-wrap">
+    <div class="wotd-card" id="wotdCard">
+        <span class="wotd-badge">🏆 Whale of the Day</span>
+        <span class="wotd-icon" id="wotdIcon">🐋</span>
+        <div class="wotd-body">
+            <div class="wotd-tier" id="wotdTier">Scanning…</div>
+            <div class="wotd-amount" id="wotdAmount">—</div>
+            <div class="wotd-usd"   id="wotdUsd"></div>
+            <div class="wotd-meta" id="wotdMeta">Largest transaction in the last 24h</div>
+            <a class="wotd-link" id="wotdLink" href="#" target="_blank" rel="noopener noreferrer">
+                ↗ View Transaction on Mempool
+            </a>
+        </div>
+    </div>
+</div>
+
 <div class="stats-bar">
     <div class="stat">
         <div class="stat-label">BTC Price</div>
@@ -694,6 +2372,10 @@
         <div class="stat-label">Last Updated</div>
         <div class="stat-value" id="statTime" style="font-size:0.82rem">—</div>
     </div>
+    <div class="stat stat--timer">
+        <div class="stat-label">⏱ Since Last Whale</div>
+        <div class="stat-value stat-value--timer" id="statLastWhale">—</div>
+    </div>
 </div>
 
 <div class="refresh-strip">
@@ -704,12 +2386,282 @@
     <span id="countdown">15s</span>
 </div>
 
-<div class="feed" id="feed">
-    <div class="loading-wrap">
-        <div class="spinner"></div>
-        <div class="loading-text">Scanning the blockchain for whales…</div>
+<div class="wave-alert" id="whaleWaveAlert">
+    <div class="wave-alert-inner">
+        <span class="wave-emoji">🌊</span>
+        <div class="wave-body">
+            <div class="wave-title">🌊 Whale Wave Detected</div>
+            <div class="wave-stats">
+                <div class="wave-stat">
+                    <span class="wave-stat-val" id="wwCount">0</span>
+                    <span class="wave-stat-label">Transactions</span>
+                </div>
+                <div class="wave-stat">
+                    <span class="wave-stat-val" id="wwBtc">0 BTC</span>
+                    <span class="wave-stat-label">Total BTC moved</span>
+                </div>
+                <div class="wave-stat">
+                    <span class="wave-stat-val">15 min</span>
+                    <span class="wave-stat-label">Time window</span>
+                </div>
+            </div>
+        </div>
+        <span class="wave-badge">⚡ Active</span>
     </div>
 </div>
+
+<div class="pressure-section">
+    <div class="pressure-card">
+        <div class="pressure-header">
+            <span class="pressure-title">⚡ Whale Pressure Indicator</span>
+            <span class="pressure-signal neutral" id="pressureSignal">— Waiting for data</span>
+        </div>
+        <div class="pressure-rows">
+            <div class="pressure-row inflow">
+                <span class="pressure-row-label">📉 Exchange Inflow</span>
+                <span class="pressure-row-value" id="pressureInflow">— BTC</span>
+                <div class="pressure-bar-track">
+                    <div class="pressure-bar-fill" id="pressureInflowBar"></div>
+                </div>
+            </div>
+            <div class="pressure-row outflow">
+                <span class="pressure-row-label">📈 Exchange Outflow</span>
+                <span class="pressure-row-value" id="pressureOutflow">— BTC</span>
+                <div class="pressure-bar-track">
+                    <div class="pressure-bar-fill" id="pressureOutflowBar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="feed-section">
+    <div class="feed-section-header">
+        <span class="feed-section-title">🐋 Whale Alert History</span>
+        <span class="feed-scroll-hint">↕ scroll for more</span>
+    </div>
+    <div class="feed-wrap">
+        <div class="feed" id="feed">
+            <div class="loading-wrap">
+                <div class="spinner"></div>
+                <div class="loading-text">Scanning the blockchain for whales…</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── Make Your Bitcoin Work ── -->
+<section class="yield-section">
+    <div class="yield-section-header">
+        <div class="yield-section-title"><span style="-webkit-text-fill-color:initial">💰</span> Make Your Bitcoin Work</div>
+        <div class="yield-section-sub">Discover ways to earn yield with your Bitcoin.</div>
+    </div>
+
+    <div class="yield-calculator">
+        <div class="yield-calculator-title">₿ BTC Yield Calculator</div>
+        <div class="yield-input-row">
+            <input id="yieldInput" class="yield-input" type="number" min="0" step="any"
+                   placeholder="Enter BTC amount (e.g. 1.0)"
+                   onkeydown="if(event.key==='Enter') calcYield()" />
+            <button class="yield-btn" onclick="calcYield()">Calculate Yield</button>
+        </div>
+    </div>
+
+    <div class="yield-earnings-card" id="yieldEarningsCard">
+        <div class="yield-earnings-title">📈 Estimated Yearly Earnings</div>
+        <div class="yield-earnings-list" id="yieldEarningsList"></div>
+        <div class="yield-best-label" id="yieldBestLabel"></div>
+    </div>
+
+    <div class="yield-table-wrap">
+        <div class="yield-table-label">Protocol Overview</div>
+        <table class="yield-table">
+            <thead>
+                <tr>
+                    <th>Protocol</th>
+                    <th>APY</th>
+                    <th>Risk</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="yield-proto-name">⚡ Lightning LP</span></td>
+                    <td><span class="yield-apy">3.2%</span></td>
+                    <td><span class="yield-risk low">Low</span></td>
+                    <td>Liquidity Provider</td>
+                </tr>
+                <tr>
+                    <td><span class="yield-proto-name">🧱 Stacks</span></td>
+                    <td><span class="yield-apy">8.0%</span></td>
+                    <td><span class="yield-risk medium">Medium</span></td>
+                    <td>Stacking (PoX)</td>
+                </tr>
+                <tr>
+                    <td><span class="yield-proto-name">🏛 Babylon</span></td>
+                    <td><span class="yield-apy">5.0%</span></td>
+                    <td><span class="yield-risk medium">Medium</span></td>
+                    <td>BTC Staking</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ── DeFi Signal ── -->
+<section class="defi-section">
+    <div class="defi-header">
+        <div class="defi-title"><span style="-webkit-text-fill-color:initial">📡</span> The DeFi Signal</div>
+        <div class="defi-subtitle">Simulate how your BTC could generate yield across Bitcoin-native ecosystems.</div>
+    </div>
+
+    <div class="defi-input-card">
+        <div class="defi-input-card-title">₿ Capital Allocation Simulator</div>
+        <div class="yield-input-row">
+            <input id="defiInput" class="yield-input" type="number" min="0" step="any"
+                   placeholder="Enter BTC amount (e.g. 1.0)"
+                   onkeydown="if(event.key==='Enter') simulateStrategy()" />
+        </div>
+        <div class="defi-risk-row">
+            <span class="defi-risk-label">Risk Level</span>
+            <div class="defi-risk-btns">
+                <button class="defi-risk-btn low active" onclick="selectRisk(this,'low')">Low</button>
+                <button class="defi-risk-btn medium"     onclick="selectRisk(this,'medium')">Medium</button>
+                <button class="defi-risk-btn high"       onclick="selectRisk(this,'high')">High</button>
+            </div>
+        </div>
+        <button class="defi-simulate-btn" onclick="simulateStrategy()">⚡ Simulate Strategy</button>
+    </div>
+
+    <div class="defi-output" id="defiOutput">
+        <div class="defi-output-title">📊 Suggested Bitcoin Allocation</div>
+        <div class="defi-alloc-list" id="defiAllocList"></div>
+        <div class="defi-summary" id="defiSummary"></div>
+    </div>
+</section>
+
+<!-- ── How to Use the DeFi Signal ── -->
+<section class="how-section">
+    <div class="how-header">
+        <div class="how-title">How to Use the DeFi Signal</div>
+    </div>
+    <div class="how-steps">
+        <div class="how-step">
+            <span class="how-step-num">Step 01</span>
+            <span class="how-step-icon">🐋</span>
+            <div class="how-step-title">Monitor Whale Activity</div>
+            <div class="how-step-desc">Watch the live feed for large BTC transactions above 100 BTC in real time.</div>
+        </div>
+        <div class="how-step">
+            <span class="how-step-num">Step 02</span>
+            <span class="how-step-icon">⚡</span>
+            <div class="how-step-title">Detect Market Signals</div>
+            <div class="how-step-desc">Use the Whale Pressure Indicator to spot whether whales are accumulating or sending BTC to exchanges.</div>
+        </div>
+        <div class="how-step">
+            <span class="how-step-num">Step 03</span>
+            <span class="how-step-icon">📊</span>
+            <div class="how-step-title">Simulate a Strategy</div>
+            <div class="how-step-desc">Enter your BTC amount and risk level in the DeFi Signal simulator to see a suggested allocation.</div>
+        </div>
+        <div class="how-step">
+            <span class="how-step-num">Step 04</span>
+            <span class="how-step-icon">🌱</span>
+            <div class="how-step-title">Explore Yield Opportunities</div>
+            <div class="how-step-desc">Compare Lightning, Babylon, and Stacks to find the best yield for your Bitcoin.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ── Bitcoin OTC Escrow Simulator ── -->
+<section class="escrow-section">
+    <div class="escrow-header">
+        <div class="escrow-title"><span style="-webkit-text-fill-color:initial">🔐</span> Bitcoin OTC Escrow Simulator</div>
+        <div class="escrow-subtitle">Simulate a trust-minimized Bitcoin escrow transaction.</div>
+    </div>
+
+    <div class="escrow-grid">
+        <div class="escrow-input-card">
+            <div class="escrow-input-label">🔵 Buyer</div>
+            <input id="escrowBuyer" class="escrow-field" type="number" min="0" step="any"
+                   placeholder="BTC amount (e.g. 1.5)" />
+        </div>
+        <div class="escrow-input-card">
+            <div class="escrow-input-label">🟢 Seller</div>
+            <input id="escrowSeller" class="escrow-field" type="number" min="0" step="any"
+                   placeholder="BTC amount (e.g. 1.5)" />
+        </div>
+    </div>
+
+    <div class="escrow-type-card" style="margin-bottom:1.2rem">
+        <div class="escrow-input-label">Escrow Configuration</div>
+        <div class="escrow-type-badge">
+            🔐 Multisig 2-of-3
+        </div>
+        <div class="escrow-participants">
+            <div class="escrow-participant">
+                <span class="escrow-participant-dot dot-buyer"></span> Buyer
+            </div>
+            <div class="escrow-participant">
+                <span class="escrow-participant-dot dot-seller"></span> Seller
+            </div>
+            <div class="escrow-participant">
+                <span class="escrow-participant-dot dot-agent"></span> Escrow Agent
+            </div>
+        </div>
+    </div>
+
+    <button class="escrow-btn" onclick="simulateEscrow()">🔐 Simulate Escrow</button>
+
+    <div class="escrow-result" id="escrowResult">
+        <div class="escrow-result-header">
+            <span class="escrow-result-icon">✅</span>
+            <div>
+                <div class="escrow-result-title">Escrow Created</div>
+                <div class="escrow-result-sub">Funds locked in multisig address</div>
+            </div>
+        </div>
+
+        <div class="escrow-details">
+            <div class="escrow-detail-box">
+                <div class="escrow-detail-label">Buyer Deposit</div>
+                <div class="escrow-detail-val blue" id="escrowResBuyer">—</div>
+            </div>
+            <div class="escrow-detail-box">
+                <div class="escrow-detail-label">Seller Deposit</div>
+                <div class="escrow-detail-val green" id="escrowResSeller">—</div>
+            </div>
+            <div class="escrow-detail-box">
+                <div class="escrow-detail-label">Total Locked</div>
+                <div class="escrow-detail-val purple" id="escrowResTotal">—</div>
+            </div>
+            <div class="escrow-detail-box">
+                <div class="escrow-detail-label">USD Value</div>
+                <div class="escrow-detail-val" id="escrowResUsd">—</div>
+            </div>
+        </div>
+
+        <div class="escrow-sig-row">
+            <span class="sig-icon">🔵</span> Buyer signature required
+        </div>
+        <div class="escrow-sig-row">
+            <span class="sig-icon">🟢</span> Seller signature required
+        </div>
+        <div class="escrow-sig-row">
+            <span class="sig-icon">🟣</span> Escrow Agent acts as tiebreaker
+        </div>
+
+        <div class="escrow-address-box">
+            <div class="escrow-address-label">Simulated Multisig Address</div>
+            <div id="escrowResAddress">—</div>
+        </div>
+
+        <div class="escrow-address-box" style="margin-top:0.5rem">
+            <div class="escrow-address-label">Release Condition</div>
+            Release requires <strong style="color:#a78bfa">2-of-3 signatures</strong> — any two participants can unlock funds.
+        </div>
+    </div>
+</section>
 
 <script>
 'use strict';
@@ -722,9 +2674,10 @@ const BASE         = 'https://mempool.space';
 const STORAGE_KEY  = 'whale_24h';
 const TTL_MS       = 24 * 60 * 60 * 1000;
 
-let btcPrice = null;
-let cdValue  = INTERVAL_MS / 1000;
-let cdTimer  = null;
+let btcPrice   = null;
+let cdValue    = INTERVAL_MS / 1000;
+let cdTimer    = null;
+let currentTxs = [];
 
 /* ── Formatters ────────────────────────────────────── */
 
@@ -740,7 +2693,12 @@ function fmtUsd(n) {
 
 function fmtAddr(a) {
     if (!a || a === 'Unknown') return 'Unknown';
-    return a.length <= 20 ? a : a.slice(0, 9) + '…' + a.slice(-9);
+    return a.length <= 14 ? a : a.slice(0, 6) + '…' + a.slice(-4);
+}
+
+function fmtFeeBtc(feeSats) {
+    if (!feeSats && feeSats !== 0) return '—';
+    return (feeSats / SATS).toFixed(6) + ' BTC';
 }
 
 function fmtTime(ts) {
@@ -860,6 +2818,36 @@ async function getPrice() {
     } catch { /* keep last known price */ }
 }
 
+async function getPriceDashboard() {
+    try {
+        const r = await fetch(
+            'https://api.coingecko.com/api/v3/simple/price' +
+            '?ids=bitcoin&vs_currencies=usd' +
+            '&include_24hr_change=true&include_24hr_vol=true'
+        );
+        if (!r.ok) throw new Error('CoinGecko ' + r.status);
+        const d   = await r.json();
+        const btc = d.bitcoin;
+
+        // Sync btcPrice so whale cards show accurate USD values
+        btcPrice = btc.usd;
+        document.getElementById('pdPrice').textContent =
+            '$' + btc.usd.toLocaleString('en-US');
+        document.getElementById('statPrice').textContent =
+            '$' + btc.usd.toLocaleString('en-US');
+
+        const change   = btc.usd_24h_change;
+        const changeEl = document.getElementById('pdChange');
+        changeEl.textContent = (change >= 0 ? '+' : '') + change.toFixed(2) + '%';
+        changeEl.className   = 'pd-change ' +
+            (Math.abs(change) < 0.05 ? 'neutral' : change >= 0 ? 'positive' : 'negative');
+
+        document.getElementById('pdVol').textContent  = fmtUsd(btc.usd_24h_vol);
+        document.getElementById('pdTime').textContent =
+            new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    } catch { /* keep last known values */ }
+}
+
 async function getMempoolWhales() {
     const basic    = await apiFetch('/api/mempool/recent');
     const minSats  = WHALE_BTC * SATS;
@@ -870,11 +2858,14 @@ async function getMempoolWhales() {
     return details.filter(Boolean).map(tx => ({ ...tx, _src: 'mempool' }));
 }
 
+let latestBlockHeight = null;
+
 async function getBlockWhales() {
     const blocks  = await apiFetch('/api/blocks');
-    const blockId = blocks?.[0]?.id;
-    if (!blockId) return [];
-    const txs     = await apiFetch(`/api/block/${blockId}/txs/0`);
+    const block0  = blocks?.[0];
+    if (!block0) return [];
+    latestBlockHeight = block0.height ?? latestBlockHeight;
+    const txs     = await apiFetch(`/api/block/${block0.id}/txs/0`);
     const minSats = WHALE_BTC * SATS;
     return txs
         .filter(tx => txValueSats(tx) >= minSats)
@@ -909,37 +2900,67 @@ function getAudioCtx() {
     return audioCtx;
 }
 
-function playWhaleSound(isMega) {
+// tier: 'dolphin' | 'whale' | 'humpback' | 'blue'
+function playTierSound(tier) {
     try {
         const ctx = getAudioCtx();
         if (ctx.state === 'suspended') ctx.resume();
         const now = ctx.currentTime;
 
-        if (isMega) {
-            // ── Deep, dramatic mega-whale call (~2.6 s) ──
+        if (tier === 'dolphin') {
+            // ── Light chirp ping (~0.65 s) ──
+            const dur  = 0.65;
+            const osc  = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(920, now);
+            osc.frequency.exponentialRampToValueAtTime(460, now + 0.38);
+            osc.frequency.exponentialRampToValueAtTime(540, now + dur);
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(0.18, now + 0.03);
+            gain.gain.setValueAtTime(0.18, now + 0.42);
+            gain.gain.linearRampToValueAtTime(0, now + dur);
+            osc.connect(gain); gain.connect(ctx.destination);
+            osc.start(now); osc.stop(now + dur);
+
+        } else if (tier === 'whale') {
+            // ── Whale alert (~1.5 s) ──
+            const dur    = 1.5;
+            const osc    = ctx.createOscillator();
+            const filter = ctx.createBiquadFilter();
+            const gain   = ctx.createGain();
+            osc.type = 'sine';
+            filter.type = 'lowpass'; filter.frequency.value = 500; filter.Q.value = 2;
+            osc.frequency.setValueAtTime(160, now);
+            osc.frequency.exponentialRampToValueAtTime(65,  now + 0.55);
+            osc.frequency.exponentialRampToValueAtTime(100, now + 1.1);
+            osc.frequency.exponentialRampToValueAtTime(75,  now + dur);
+            gain.gain.setValueAtTime(0, now);
+            gain.gain.linearRampToValueAtTime(0.28, now + 0.07);
+            gain.gain.setValueAtTime(0.28, now + 1.2);
+            gain.gain.linearRampToValueAtTime(0, now + dur);
+            osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+            osc.start(now); osc.stop(now + dur);
+
+        } else if (tier === 'humpback') {
+            // ── Deep humpback call (~2.6 s) ──
             const dur    = 2.6;
             const osc    = ctx.createOscillator();
             const filter = ctx.createBiquadFilter();
             const gain   = ctx.createGain();
-
             osc.type = 'sine';
             filter.type = 'lowpass'; filter.frequency.value = 620; filter.Q.value = 3.5;
-
-            // Frequency arc: 280 → 38 → 90 → 55 Hz
             osc.frequency.setValueAtTime(280, now);
             osc.frequency.exponentialRampToValueAtTime(38,  now + 1.0);
             osc.frequency.exponentialRampToValueAtTime(90,  now + 2.0);
             osc.frequency.exponentialRampToValueAtTime(55,  now + dur);
-
             gain.gain.setValueAtTime(0, now);
             gain.gain.linearRampToValueAtTime(0.45, now + 0.12);
             gain.gain.setValueAtTime(0.45, now + 2.2);
             gain.gain.linearRampToValueAtTime(0, now + dur);
-
             osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
             osc.start(now); osc.stop(now + dur);
-
-            // Harmonic overtone (1.5×) for depth
+            // Harmonic overtone for depth
             const osc2  = ctx.createOscillator();
             const gain2 = ctx.createGain();
             osc2.type = 'sine';
@@ -955,44 +2976,75 @@ function playWhaleSound(isMega) {
             osc2.start(now); osc2.stop(now + dur);
 
         } else {
-            // ── Normal whale alert (~1.5 s) ──
-            const dur    = 1.5;
-            const osc    = ctx.createOscillator();
-            const filter = ctx.createBiquadFilter();
-            const gain   = ctx.createGain();
+            // ── Blue whale alarm (~3.5 s) — sub-bass rumble + pulsing alarm ──
+            const dur = 3.5;
 
-            osc.type = 'sine';
-            filter.type = 'lowpass'; filter.frequency.value = 500; filter.Q.value = 2;
+            // Layer 1: sawtooth sub-bass
+            const osc1    = ctx.createOscillator();
+            const filter1 = ctx.createBiquadFilter();
+            const gain1   = ctx.createGain();
+            osc1.type = 'sawtooth';
+            filter1.type = 'lowpass'; filter1.frequency.value = 380; filter1.Q.value = 5;
+            osc1.frequency.setValueAtTime(180, now);
+            osc1.frequency.exponentialRampToValueAtTime(28,  now + 1.4);
+            osc1.frequency.exponentialRampToValueAtTime(60,  now + 2.6);
+            osc1.frequency.exponentialRampToValueAtTime(35,  now + dur);
+            gain1.gain.setValueAtTime(0, now);
+            gain1.gain.linearRampToValueAtTime(0.48, now + 0.1);
+            gain1.gain.setValueAtTime(0.48, now + 2.9);
+            gain1.gain.linearRampToValueAtTime(0, now + dur);
+            osc1.connect(filter1); filter1.connect(gain1); gain1.connect(ctx.destination);
+            osc1.start(now); osc1.stop(now + dur);
 
-            // Frequency arc: 160 → 65 → 100 → 75 Hz
-            osc.frequency.setValueAtTime(160, now);
-            osc.frequency.exponentialRampToValueAtTime(65,  now + 0.55);
-            osc.frequency.exponentialRampToValueAtTime(100, now + 1.1);
-            osc.frequency.exponentialRampToValueAtTime(75,  now + dur);
+            // Layer 2: pulsing alarm tone (~4 Hz tremolo)
+            const osc2  = ctx.createOscillator();
+            const gain2 = ctx.createGain();
+            osc2.type = 'sine';
+            osc2.frequency.setValueAtTime(520, now);
+            osc2.frequency.exponentialRampToValueAtTime(380, now + 0.7);
+            osc2.frequency.exponentialRampToValueAtTime(480, now + 1.5);
+            osc2.frequency.exponentialRampToValueAtTime(320, now + 2.5);
+            osc2.frequency.exponentialRampToValueAtTime(440, now + dur);
+            const pulseCount = Math.floor(dur * 4);
+            for (let i = 0; i < pulseCount; i++) {
+                gain2.gain.setValueAtTime(i % 2 === 0 ? 0.22 : 0.05, now + i * 0.25);
+            }
+            gain2.gain.linearRampToValueAtTime(0, now + dur);
+            osc2.connect(gain2); gain2.connect(ctx.destination);
+            osc2.start(now); osc2.stop(now + dur);
 
-            gain.gain.setValueAtTime(0, now);
-            gain.gain.linearRampToValueAtTime(0.28, now + 0.07);
-            gain.gain.setValueAtTime(0.28, now + 1.2);
-            gain.gain.linearRampToValueAtTime(0, now + dur);
-
-            osc.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
-            osc.start(now); osc.stop(now + dur);
+            // Layer 3: deep sine for weight
+            const osc3  = ctx.createOscillator();
+            const gain3 = ctx.createGain();
+            osc3.type = 'sine';
+            osc3.frequency.setValueAtTime(80, now);
+            osc3.frequency.exponentialRampToValueAtTime(22, now + 1.8);
+            osc3.frequency.exponentialRampToValueAtTime(45, now + dur);
+            gain3.gain.setValueAtTime(0, now);
+            gain3.gain.linearRampToValueAtTime(0.3,  now + 0.15);
+            gain3.gain.setValueAtTime(0.3,  now + 2.8);
+            gain3.gain.linearRampToValueAtTime(0, now + dur);
+            osc3.connect(gain3); gain3.connect(ctx.destination);
+            osc3.start(now); osc3.stop(now + dur);
         }
     } catch (e) { console.warn('Sound error:', e); }
 }
 
 function checkNewWhales(txs) {
     if (!soundEnabled) return;
-    let hasMega = false, hasNormal = false;
+    // Play only the highest tier detected among unseen txs this cycle
+    let topLevel = 0; // 1=dolphin 2=whale 3=humpback 4=blue
     for (const tx of txs) {
         if (alertedTxids.has(tx.txid)) continue;
         alertedTxids.add(tx.txid);
         const btc = txValueSats(tx) / SATS;
-        if      (btc >= MEGA_BTC)  hasMega   = true;
-        else if (btc >= WHALE_BTC) hasNormal = true;
+        const lvl = btc >= 5000 ? 4 : btc >= 1000 ? 3 : btc >= 500 ? 2 : 1;
+        if (lvl > topLevel) topLevel = lvl;
     }
-    if      (hasMega)   playWhaleSound(true);
-    else if (hasNormal) playWhaleSound(false);
+    if      (topLevel === 4) playTierSound('blue');
+    else if (topLevel === 3) playTierSound('humpback');
+    else if (topLevel === 2) playTierSound('whale');
+    else if (topLevel === 1) playTierSound('dolphin');
 }
 
 function toggleSound() {
@@ -1004,7 +3056,7 @@ function toggleSound() {
         btn.classList.add('on');
         icon.textContent = '🔊';
         text.textContent = 'Sound ON';
-        playWhaleSound(false); // audible confirmation
+        playTierSound('whale'); // audible confirmation
     } else {
         btn.classList.remove('on');
         icon.textContent = '🔇';
@@ -1148,16 +3200,18 @@ function dormancyBannerHtml(tx, btc) {
     const years = getDormancyYears(tx);
     if (!years) return '';
     const y = years.toFixed(1);
-    let cls, title;
-    if      (years >= 5) { cls = 'dormant-5y'; title = 'Ancient Whale Awakened'; }
-    else if (years >= 3) { cls = 'dormant-3y'; title = 'Long Dormant Whale';      }
-    else                 { cls = 'dormant-1y'; title = 'Dormant Whale Awakened';  }
+    let cls, icon, title;
+    if      (years >= 10) { cls = 'dormant-10y'; icon = '👑'; title = '🚨 Legendary Whale';      }
+    else if (years >= 5)  { cls = 'dormant-5y';  icon = '🚨'; title = '🚨 Ancient Whale';         }
+    else if (years >= 3)  { cls = 'dormant-3y';  icon = '⚠️'; title = 'Long Dormant Whale';       }
+    else                  { cls = 'dormant-1y';  icon = '💤'; title = 'Dormant Whale Awakening';  }
     return `
       <div class="dormant-banner ${cls}">
-        <span class="dormant-icon">🐋</span>
-        <div>
+        <span class="dormant-icon">${icon}</span>
+        <div class="dormant-body">
           <div class="dormant-title">${title}</div>
-          <div class="dormant-sub">&#x20BF;\u2009${fmtBtc(btc)} moved after ${y} years of inactivity</div>
+          <div class="dormant-amount">&#x20BF;\u2009${fmtBtc(btc)} BTC moved</div>
+          <div class="dormant-sub">Inactive for: ${y} years</div>
         </div>
       </div>`;
 }
@@ -1186,20 +3240,86 @@ function dirHtml(from, to) {
       </div>`;
 }
 
+/* ── Time Since Last Whale ──────────────────────────── */
+
+let lastWhaleSeen        = null;
+let lastWhaleTimerHandle = null;
+
+function fmtElapsed(ms) {
+    const total = Math.floor(ms / 1000);
+    const h = Math.floor(total / 3600);
+    const m = Math.floor((total % 3600) / 60);
+    const s = total % 60;
+    return String(h).padStart(2, '0') + ':'
+         + String(m).padStart(2, '0') + ':'
+         + String(s).padStart(2, '0');
+}
+
+function tickLastWhaleTimer() {
+    const el = document.getElementById('statLastWhale');
+    if (!el || !lastWhaleSeen) return;
+    el.textContent = fmtElapsed(Date.now() - lastWhaleSeen);
+}
+
+function setLastWhaleSeen(timestamp) {
+    lastWhaleSeen = timestamp;
+    tickLastWhaleTimer();
+    if (!lastWhaleTimerHandle) {
+        lastWhaleTimerHandle = setInterval(tickLastWhaleTimer, 1000);
+    }
+}
+
 /* ── Rendering ─────────────────────────────────────── */
+
+function classifyWhale(btc) {
+    if (btc >= 5000) return { emoji: '🐳', label: 'Blue Whale',     cls: 'tier-blue-whale' };
+    if (btc >= 1000) return { emoji: '🐋', label: 'Humpback Whale', cls: 'tier-humpback'   };
+    if (btc >= 500)  return { emoji: '🐋', label: 'Whale',          cls: 'tier-whale'      };
+    return               { emoji: '🐬', label: 'Dolphin',        cls: 'tier-dolphin'    };
+}
+
+function buildTweetUrl(btc, usd, from, to, txid) {
+    const flow     = getFlow(from, to);
+    const fromName = flow.src.name === 'Wallet'   ? 'Unknown Wallet'
+                   : flow.src.name === 'Unknown'  ? 'Unknown Wallet'
+                   : flow.src.name === 'Mining'   ? 'Mining Reward'
+                   : flow.src.name;
+    const toName   = flow.dst.name === 'Wallet'   ? 'Unknown Wallet'
+                   : flow.dst.name === 'Unknown'  ? 'Unknown Wallet'
+                   : flow.dst.name;
+
+    const btcStr   = fmtBtc(btc) + ' BTC';
+    const usdStr   = usd ? ' (' + fmtUsd(usd) + ')' : '';
+    const txUrl    = BASE + '/tx/' + txid;
+
+    const text = [
+        '🐋 Whale Alert!',
+        '',
+        btcStr + usdStr + ' just moved',
+        fromName + ' → ' + toName,
+        '',
+        'Verify: ' + txUrl,
+        '',
+        '#Bitcoin #WhaleAlert #BTC'
+    ].join('\n');
+
+    return 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text);
+}
 
 function makeCard(tx) {
     const sats      = txValueSats(tx);
     const btc       = sats / SATS;
     const usd       = btcPrice ? btc * btcPrice : null;
-    const isMega    = btc >= MEGA_BTC;
+    const isMega    = btc >= MEGA_BTC;   // kept for sound logic
+    const whale     = classifyWhale(btc);
     const from      = senderAddr(tx);
     const to        = receiverAddr(tx);
     const blockTs   = tx.status?.block_time;
     const foundAt   = tx._foundAt;
+    const tweetUrl  = buildTweetUrl(btc, usd, from, to, tx.txid);
 
     const card = document.createElement('div');
-    card.className = 'tx-card' + (isMega ? ' mega' : '');
+    card.className = 'tx-card ' + whale.cls;
 
     card.innerHTML = `
       <div class="card-top">
@@ -1208,8 +3328,8 @@ function makeCard(tx) {
           <div class="amount-usd">${usd ? fmtUsd(usd) : 'Price unavailable'}</div>
         </div>
         <div style="text-align:right">
-          <span class="badge ${isMega ? 'badge-mega' : 'badge-normal'}">
-            ${isMega ? '🐋 HUMPBACK WHALE' : '🐋 WHALE'}
+          <span class="badge badge-${whale.cls.replace('tier-', '')}">
+            ${whale.emoji} ${whale.label.toUpperCase()}
           </span>
           <div class="conf-tag">
             ${tx._src === 'mempool' ? '⏳ Unconfirmed' : '✅ Confirmed'}
@@ -1218,34 +3338,54 @@ function makeCard(tx) {
       </div>
       ${dirHtml(from, to)}
       ${dormancyBannerHtml(tx, btc)}
-      <div class="fields">
-        <div>
-          <div class="field-label">From</div>
-          <div class="field-val">${addrDisplay(from)}</div>
+      <div class="tx-summary-label">📋 Transaction Summary</div>
+
+      <div class="tx-addr-row">
+        <div class="tx-addr-box">
+          <div class="tx-addr-box-label">From</div>
+          <div class="tx-addr-box-val">${addrDisplay(from)}</div>
         </div>
-        <div>
-          <div class="field-label">To</div>
-          <div class="field-val">${addrDisplay(to)}</div>
+        <div class="tx-addr-box">
+          <div class="tx-addr-box-label">To</div>
+          <div class="tx-addr-box-val">${addrDisplay(to)}</div>
         </div>
-        <div>
-          <div class="field-label">TX Hash</div>
-          <div class="field-val">
-            <a href="${BASE}/tx/${tx.txid}" target="_blank" rel="noopener"
-               title="${tx.txid}">${tx.txid.slice(0, 14)}…${tx.txid.slice(-8)}</a>
-          </div>
+      </div>
+
+      <div class="tx-meta-grid">
+        <div class="tx-meta-item">
+          <div class="tx-meta-item-label">Block</div>
+          <div class="tx-meta-item-val">${tx.status?.block_height ? '#' + tx.status.block_height.toLocaleString('en-US') : '—'}</div>
         </div>
-        <div>
-          <div class="field-label">Block Time</div>
-          <div class="field-val ts">${fmtTime(blockTs)}</div>
+        <div class="tx-meta-item">
+          <div class="tx-meta-item-label">Fee</div>
+          <div class="tx-meta-item-val">${fmtFeeBtc(tx.fee)}</div>
         </div>
-        <div style="grid-column:1/-1">
-          <div class="field-label">Detected</div>
-          <div class="field-val detected-val"
-               title="${foundAt ? fullDateTime(foundAt) : ''}">
-            ${foundAt ? relTime(foundAt) : '—'}
-          </div>
+        <div class="tx-meta-item">
+          <div class="tx-meta-item-label">Confirms</div>
+          <div class="tx-meta-item-val">${
+            !tx.status?.confirmed ? '0 — pending'
+            : latestBlockHeight && tx.status?.block_height
+              ? (latestBlockHeight - tx.status.block_height + 1) + '+'
+              : '✓'
+          }</div>
         </div>
-      </div>`;
+        <div class="tx-meta-item">
+          <div class="tx-meta-item-label">Detected</div>
+          <div class="tx-meta-item-val" title="${foundAt ? fullDateTime(foundAt) : ''}">${foundAt ? relTime(foundAt) : '—'}</div>
+        </div>
+      </div>
+
+      <div class="tx-hash-row">
+        <span class="tx-hash-label">TX</span>
+        <span class="tx-hash-val">
+          <a href="${BASE}/tx/${tx.txid}" target="_blank" rel="noopener" title="${tx.txid}">
+            ${tx.txid.slice(0, 10)}…${tx.txid.slice(-8)}
+          </a>
+        </span>
+      </div>
+      <a class="share-x-btn" href="${tweetUrl}" target="_blank" rel="noopener noreferrer">
+        <i class="x-logo">𝕏</i> Share on X
+      </a>`;
 
     return card;
 }
@@ -1254,12 +3394,13 @@ function updateWhaleStats(txs) {
     const todayStart = (() => { const d = new Date(); d.setHours(0,0,0,0); return d.getTime(); })();
     const todayTxs   = txs.filter(tx => tx._foundAt && tx._foundAt >= todayStart);
 
-    let biggestBtc   = 0;
+    let biggestBtc = 0;
+    let biggestTx  = null;
     let totalTodayBtc = 0;
 
     for (const tx of txs) {
         const btc = txValueSats(tx) / SATS;
-        if (btc > biggestBtc) biggestBtc = btc;
+        if (btc > biggestBtc) { biggestBtc = btc; biggestTx = tx; }
     }
     for (const tx of todayTxs) {
         totalTodayBtc += txValueSats(tx) / SATS;
@@ -1271,9 +3412,43 @@ function updateWhaleStats(txs) {
         biggestBtc > 0 ? '₿\u2009' + fmtBtc(biggestBtc) : '—';
     document.getElementById('wsTotal').textContent =
         totalTodayBtc > 0 ? '₿\u2009' + fmtBtc(totalTodayBtc) : '—';
+
+    updateWhaleOfDay(biggestTx, biggestBtc);
+}
+
+function updateWhaleOfDay(tx, btc) {
+    const card = document.getElementById('wotdCard');
+
+    if (!tx || btc <= 0) {
+        card.classList.remove('active');
+        document.getElementById('wotdTier').textContent   = 'No data yet';
+        document.getElementById('wotdAmount').textContent = '—';
+        document.getElementById('wotdUsd').textContent    = '';
+        document.getElementById('wotdMeta').textContent   = 'Largest transaction in the last 24h';
+        return;
+    }
+
+    const whale = classifyWhale(btc);
+    const usd   = btcPrice ? btc * btcPrice : null;
+    const from  = senderAddr(tx);
+    const to    = receiverAddr(tx);
+    const flow  = getFlow(from, to);
+    const age   = tx._foundAt ? relTime(tx._foundAt) : '—';
+
+    // tier → icon mapping
+    const icons = { 'tier-dolphin': '🐬', 'tier-whale': '🐋', 'tier-humpback': '🐋', 'tier-blue-whale': '🐳' };
+
+    card.classList.add('active');
+    document.getElementById('wotdIcon').textContent   = icons[whale.cls] || '🐋';
+    document.getElementById('wotdTier').textContent   = whale.label;
+    document.getElementById('wotdAmount').textContent = '₿\u2009' + fmtBtc(btc) + ' BTC moved';
+    document.getElementById('wotdUsd').textContent    = usd ? fmtUsd(usd) : '';
+    document.getElementById('wotdMeta').textContent = flow.src.name + ' → ' + flow.dst.name + '  ·  ' + age;
+    document.getElementById('wotdLink').href = BASE + '/tx/' + tx.txid;
 }
 
 function renderFeed(txs) {
+    currentTxs = txs.filter(tx => !tx._isDemo); // persist only real txs
     const feed = document.getElementById('feed');
     const frag = document.createDocumentFragment();
 
@@ -1288,7 +3463,14 @@ function renderFeed(txs) {
     feed.innerHTML = '';
     feed.appendChild(frag);
     document.getElementById('statCount').textContent = txs.length;
+
+    const latestFoundAt = txs.reduce((max, tx) =>
+        (tx._foundAt && tx._foundAt > max) ? tx._foundAt : max, 0);
+    if (latestFoundAt) setLastWhaleSeen(latestFoundAt);
+
     updateWhaleStats(txs);
+    updatePressureIndicator(txs);
+    updateWhaleWave(txs);
     checkNewWhales(txs);
 }
 
@@ -1384,6 +3566,9 @@ function startCountdown() {
     // Pre-seed alertedTxids so cached whales never trigger sounds on load
     for (const tx of loadStored()) alertedTxids.add(tx.txid);
 
+    await getPriceDashboard();
+    setInterval(getPriceDashboard, 60_000);
+
     await refresh(true);
     startCountdown();
 
@@ -1392,6 +3577,329 @@ function startCountdown() {
         startCountdown();
     }, INTERVAL_MS);
 })();
+
+/* ── Whale Wave Detector ────────────────────────────── */
+
+const WAVE_WINDOW_MS  = 15 * 60 * 1000; // 15-minute window
+const WAVE_THRESHOLD  = 3;              // minimum transactions
+
+function updateWhaleWave(txs) {
+    const cutoff = Date.now() - WAVE_WINDOW_MS;
+    const recent = txs.filter(tx => tx._foundAt && tx._foundAt >= cutoff);
+    const alert  = document.getElementById('whaleWaveAlert');
+
+    if (recent.length >= WAVE_THRESHOLD) {
+        const totalBtc = recent.reduce((sum, tx) => sum + txValueSats(tx) / SATS, 0);
+        document.getElementById('wwCount').textContent = recent.length;
+        document.getElementById('wwBtc').textContent   = fmtBtc(totalBtc) + ' BTC';
+        alert.classList.add('active');
+    } else {
+        alert.classList.remove('active');
+    }
+}
+
+/* ── Whale Pressure Indicator ───────────────────────── */
+
+function updatePressureIndicator(txs) {
+    let inflow  = 0; // wallet/unknown → exchange  (bearish)
+    let outflow = 0; // exchange → wallet/unknown  (bullish)
+
+    for (const tx of txs) {
+        const from  = senderAddr(tx);
+        const to    = receiverAddr(tx);
+        const btc   = txValueSats(tx) / SATS;
+        const flow  = getFlow(from, to);
+
+        if (flow.dst.type === 'exchange' && flow.src.type !== 'exchange') {
+            inflow  += btc;
+        } else if (flow.src.type === 'exchange' && flow.dst.type !== 'exchange') {
+            outflow += btc;
+        }
+    }
+
+    const total = inflow + outflow;
+
+    document.getElementById('pressureInflow').textContent  =
+        fmtBtc(inflow)  + ' BTC';
+    document.getElementById('pressureOutflow').textContent =
+        fmtBtc(outflow) + ' BTC';
+
+    // Scale bars relative to whichever side is larger
+    if (total > 0) {
+        document.getElementById('pressureInflowBar').style.width  =
+            (inflow  / total * 100).toFixed(1) + '%';
+        document.getElementById('pressureOutflowBar').style.width =
+            (outflow / total * 100).toFixed(1) + '%';
+    }
+
+    const sig  = document.getElementById('pressureSignal');
+    const diff = inflow - outflow;
+    const threshold = total * 0.1; // within 10% → neutral
+
+    if (total === 0 || (Math.abs(diff) < threshold)) {
+        sig.className = 'pressure-signal neutral';
+        sig.textContent = '⚖️ Neutral';
+    } else if (diff > 0) {
+        sig.className = 'pressure-signal bearish';
+        sig.textContent = '🐻 Bearish Pressure';
+    } else {
+        sig.className = 'pressure-signal bullish';
+        sig.textContent = '🐂 Bullish Accumulation';
+    }
+}
+
+/* ── DeFi Signal – Capital Allocation Simulator ─────── */
+
+const DEFI_STRATEGIES = {
+    low: {
+        label: 'Conservative',
+        allocs: [
+            { name: '⚡ Lightning Liquidity', apy: 0.032, pct: 0.70 },
+            { name: '🏛 Babylon Staking',     apy: 0.050, pct: 0.20 },
+            { name: '🔒 Hold BTC',            apy: 0.000, pct: 0.10 },
+        ],
+    },
+    medium: {
+        label: 'Balanced',
+        allocs: [
+            { name: '⚡ Lightning Liquidity', apy: 0.032, pct: 0.50 },
+            { name: '🏛 Babylon Staking',     apy: 0.050, pct: 0.30 },
+            { name: '🧱 Stacks',              apy: 0.080, pct: 0.20 },
+        ],
+    },
+    high: {
+        label: 'Aggressive',
+        allocs: [
+            { name: '🧱 Stacks',              apy: 0.080, pct: 0.50 },
+            { name: '🏛 Babylon Staking',     apy: 0.050, pct: 0.30 },
+            { name: '⚡ Lightning Liquidity', apy: 0.032, pct: 0.20 },
+        ],
+    },
+};
+
+let defiSelectedRisk = 'low';
+
+function selectRisk(btn, risk) {
+    document.querySelectorAll('.defi-risk-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    defiSelectedRisk = risk;
+}
+
+function simulateStrategy() {
+    const input = document.getElementById('defiInput');
+    const btc   = parseFloat(input.value);
+    if (!btc || btc <= 0) { input.focus(); return; }
+
+    const strategy = DEFI_STRATEGIES[defiSelectedRisk];
+    let totalYearlyBtc = 0;
+
+    const allocs = strategy.allocs.map(a => {
+        const allocBtc  = btc * a.pct;
+        const yearlyBtc = allocBtc * a.apy;
+        totalYearlyBtc += yearlyBtc;
+        return { ...a, allocBtc, yearlyBtc };
+    });
+
+    const blendedApy = btc > 0 ? totalYearlyBtc / btc : 0;
+    const yearlyUsd  = btcPrice ? totalYearlyBtc * btcPrice : null;
+
+    document.getElementById('defiAllocList').innerHTML = allocs.map(a => `
+        <div class="defi-alloc-row">
+            <div class="defi-alloc-top">
+                <span class="defi-alloc-name">${a.name}</span>
+                <span class="defi-alloc-pct">${(a.pct * 100).toFixed(0)}%</span>
+            </div>
+            <div class="defi-alloc-bar-track">
+                <div class="defi-alloc-bar-fill" style="width:${(a.pct * 100).toFixed(0)}%"></div>
+            </div>
+            <div class="defi-alloc-details">
+                <span>₿ ${a.allocBtc.toFixed(6)} allocated</span>
+                <span>${a.apy > 0
+                    ? '→ ₿\u2009' + a.yearlyBtc.toFixed(6) + ' / year'
+                    : '→ HODL'}</span>
+            </div>
+        </div>`).join('');
+
+    document.getElementById('defiSummary').innerHTML = `
+        <div class="defi-summary-row">
+            <span class="defi-summary-label">Strategy</span>
+            <span class="defi-summary-val">${strategy.label}</span>
+        </div>
+        <div class="defi-summary-row">
+            <span class="defi-summary-label">Estimated APY</span>
+            <span class="defi-summary-val apy">${(blendedApy * 100).toFixed(2)}%</span>
+        </div>
+        <div class="defi-summary-row">
+            <span class="defi-summary-label">Yearly BTC Return</span>
+            <span class="defi-summary-val">₿ ${totalYearlyBtc.toFixed(6)}</span>
+        </div>
+        ${yearlyUsd ? `
+        <div class="defi-summary-row">
+            <span class="defi-summary-label">Yearly USD Value</span>
+            <span class="defi-summary-val">${fmtUsd(yearlyUsd)}</span>
+        </div>` : ''}`;
+
+    const out = document.getElementById('defiOutput');
+    out.classList.remove('visible');
+    // Force reflow so slide-in animation replays on each simulation
+    void out.offsetWidth;
+    out.classList.add('visible');
+}
+
+/* ── Demo Mode ──────────────────────────────────────── */
+
+const DEMO_SCENARIOS = [
+    {
+        label:         '🐬 Dolphin',
+        btcSats:       250 * SATS,
+        fromAddr:      'bc1qdemowalletaaaaaaaaaaaaaaaaaaaaaaaa001',
+        toAddr:        'bc1qdemowalletaaaaaaaaaaaaaaaaaaaaaaaa002',
+        dormancyYears: 0,
+    },
+    {
+        label:         '🐋 Whale',
+        btcSats:       750 * SATS,
+        // Binance cold wallet → unknown wallet  (outflow = bullish signal)
+        fromAddr:      '34xp4vRoCGJym3xR7yCVPFHoCNxv4Twseo',
+        toAddr:        'bc1qdemowalletaaaaaaaaaaaaaaaaaaaaaaaa003',
+        dormancyYears: 0,
+    },
+    {
+        label:         '🐋 Humpback',
+        btcSats:       1500 * SATS,
+        // unknown wallet → Binance  (inflow = bearish signal) + dormancy banner
+        fromAddr:      'bc1qdemowalletaaaaaaaaaaaaaaaaaaaaaaaa004',
+        toAddr:        '34xp4vRoCGJym3xR7yCVPFHoCNxv4Twseo',
+        dormancyYears: 4.2,
+    },
+    {
+        label:         '🐳 Blue Whale',
+        btcSats:       6200 * SATS,
+        // unknown wallet → Coinbase  (big inflow) + legendary dormancy
+        fromAddr:      'bc1qdemowalletaaaaaaaaaaaaaaaaaaaaaaaa005',
+        toAddr:        '3Kzh9qAqVWQhEsfQz7zEQL1EuSx5tyNLNS',
+        dormancyYears: 11.3,
+    },
+];
+
+let demoIdx = 0;
+
+function runDemo() {
+    const s       = DEMO_SCENARIOS[demoIdx % DEMO_SCENARIOS.length];
+    demoIdx++;
+
+    const fakeTx = {
+        txid:           'demo_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+        vin:            [{ prevout: { scriptpubkey_address: s.fromAddr }, txid: 'demo_in_' + Date.now() }],
+        vout:           [{ value: s.btcSats, scriptpubkey_address: s.toAddr }],
+        status:         { confirmed: false, block_time: null },
+        _src:           'mempool',
+        _foundAt:       Date.now(),
+        _dormancyYears: s.dormancyYears,
+        _isDemo:        true,
+    };
+
+    // Sound always fires in demo regardless of toggle state
+    const prevSound = soundEnabled;
+    soundEnabled = true;
+    renderFeed([fakeTx, ...currentTxs]);
+    soundEnabled = prevSound;
+
+    // Button feedback
+    const btn = document.getElementById('demoBtn');
+    btn.textContent = s.label;
+    btn.classList.add('firing');
+    setTimeout(() => {
+        btn.textContent = '🎬 Demo';
+        btn.classList.remove('firing');
+    }, 2000);
+}
+
+/* ── OTC Escrow Simulator ───────────────────────────── */
+
+// Generate a plausible-looking P2SH multisig address (simulation only)
+function genSimAddress() {
+    const chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+    let addr = '3'; // P2SH prefix
+    for (let i = 0; i < 33; i++) {
+        addr += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return addr;
+}
+
+function simulateEscrow() {
+    const buyerBtc  = parseFloat(document.getElementById('escrowBuyer').value);
+    const sellerBtc = parseFloat(document.getElementById('escrowSeller').value);
+
+    if ((!buyerBtc || buyerBtc <= 0) && (!sellerBtc || sellerBtc <= 0)) {
+        document.getElementById('escrowBuyer').focus();
+        return;
+    }
+
+    const buyer  = buyerBtc  || 0;
+    const seller = sellerBtc || 0;
+    const total  = buyer + seller;
+    const usd    = btcPrice ? total * btcPrice : null;
+
+    document.getElementById('escrowResBuyer').textContent  = '₿ ' + buyer.toFixed(6);
+    document.getElementById('escrowResSeller').textContent = '₿ ' + seller.toFixed(6);
+    document.getElementById('escrowResTotal').textContent  = '₿ ' + total.toFixed(6);
+    document.getElementById('escrowResUsd').textContent    = usd ? fmtUsd(usd) : '—';
+    document.getElementById('escrowResAddress').textContent = genSimAddress();
+
+    const result = document.getElementById('escrowResult');
+    result.classList.remove('visible');
+    void result.offsetWidth; // replay animation
+    result.classList.add('visible');
+}
+
+/* ── Yield Calculator ───────────────────────────────── */
+
+const YIELD_PROTOCOLS = [
+    { name: '⚡ Lightning LP', apy: 0.032 },
+    { name: '🧱 Stacks',       apy: 0.080 },
+    { name: '🏛 Babylon',      apy: 0.050 },
+];
+
+function calcYield() {
+    const input = document.getElementById('yieldInput');
+    const btc   = parseFloat(input.value);
+    if (!btc || btc <= 0) { input.focus(); return; }
+
+    const earnings = YIELD_PROTOCOLS.map(p => ({
+        name:   p.name,
+        yearly: btc * p.apy,
+    }));
+
+    const best = earnings.reduce((a, b) => a.yearly > b.yearly ? a : b);
+
+    document.getElementById('yieldEarningsList').innerHTML =
+        earnings.map(e => `
+            <div class="yield-earning-row${e.name === best.name ? ' best' : ''}">
+                <span class="yield-earning-name">${e.name}</span>
+                <span class="yield-earning-btc">₿ ${e.yearly.toFixed(6)} BTC</span>
+            </div>`).join('');
+
+    // Strip leading emoji for label
+    const bestShort = best.name.replace(/^\S+\s*/, '');
+    document.getElementById('yieldBestLabel').textContent =
+        '🏆 Best Option: ' + bestShort;
+
+    document.getElementById('yieldEarningsCard').classList.add('visible');
+}
 </script>
+
+<section class="transparency-section">
+    <div class="transparency-card">
+        <div class="transparency-title">⛓ On-Chain Transparency</div>
+        <p class="transparency-body">
+            This dashboard monitors large Bitcoin transactions directly from public blockchain data.<br>
+            All whale alerts can be verified on a blockchain explorer.
+        </p>
+        <a class="transparency-source" href="https://mempool.space" target="_blank" rel="noopener">
+            🔗 Data Source: mempool.space
+        </a>
+    </div>
+</section>
 </body>
 </html>
