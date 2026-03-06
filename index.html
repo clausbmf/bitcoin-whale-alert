@@ -268,6 +268,41 @@
         .wotd-card.active .wotd-link { display: inline-flex; }
         .wotd-link:hover { color: #fbbf24; }
 
+        .wotd-actions {
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+            margin-top: 0.55rem;
+            flex-wrap: wrap;
+        }
+
+        .wotd-card.active .wotd-actions { display: flex; }
+
+        .wotd-share-x {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.38rem 0.85rem;
+            background: transparent;
+            border: 1px solid #1e1e32;
+            border-radius: 8px;
+            color: #4a4a68;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            text-decoration: none;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            transition: border-color 0.2s, color 0.2s, background 0.2s;
+            user-select: none;
+        }
+
+        .wotd-share-x:hover {
+            border-color: rgba(255,255,255,0.2);
+            color: #e0e0e0;
+            background: rgba(255,255,255,0.04);
+        }
+
         /* ── Stats bar ── */
         .stats-bar {
             display: flex;
@@ -2113,11 +2148,11 @@
 
         .pressure-rows {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 0.75rem;
         }
 
-        @media (max-width: 480px) { .pressure-rows { grid-template-columns: 1fr; } }
+        @media (max-width: 600px) { .pressure-rows { grid-template-columns: 1fr; } }
 
         .pressure-row {
             display: flex;
@@ -2143,8 +2178,9 @@
             font-family: 'Courier New', monospace;
         }
 
-        .pressure-row.inflow  .pressure-row-value { color: #ef4444; }
-        .pressure-row.outflow .pressure-row-value { color: #4ade80; }
+        .pressure-row.inflow    .pressure-row-value { color: #ef4444; }
+        .pressure-row.outflow   .pressure-row-value { color: #4ade80; }
+        .pressure-row.transfer  .pressure-row-value { color: #f7931a; }
 
         .pressure-bar-track {
             height: 4px;
@@ -2161,8 +2197,9 @@
             transition: width 0.6s ease;
         }
 
-        .pressure-row.inflow  .pressure-bar-fill { background: #ef4444; }
-        .pressure-row.outflow .pressure-bar-fill { background: #4ade80; }
+        .pressure-row.inflow   .pressure-bar-fill { background: #ef4444; }
+        .pressure-row.outflow  .pressure-bar-fill { background: #4ade80; }
+        .pressure-row.transfer .pressure-bar-fill { background: #f7931a; }
 
         /* ── Bitcoin Price Dashboard ── */
         .price-dashboard {
@@ -2276,6 +2313,88 @@
             .price-dashboard-inner { justify-content: center; text-align: center; }
             .pd-right { align-items: center; }
         }
+
+        /* ── Whale Size Filter ── */
+        .whale-filter {
+            max-width: 860px;
+            margin: 0 auto 0.8rem;
+            padding: 0 1rem;
+        }
+
+        .whale-filter-inner {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            background: #0d1120;
+            border: 1px solid #1c1c30;
+            border-radius: 12px;
+            padding: 0.75rem 1.1rem;
+        }
+
+        .whale-filter-label {
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #3a3a55;
+            white-space: nowrap;
+            margin-right: 0.3rem;
+        }
+
+        .whale-filter-btn {
+            background: transparent;
+            border: 1px solid #1e1e32;
+            border-radius: 20px;
+            color: #4a4a68;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            padding: 0.35rem 0.85rem;
+            cursor: pointer;
+            transition: all 0.18s;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            white-space: nowrap;
+        }
+
+        .whale-filter-btn:hover { border-color: #2a2a48; color: #8080a0; }
+
+        .whale-filter-btn.active-all {
+            border-color: rgba(247,147,26,0.55);
+            background: rgba(247,147,26,0.09);
+            color: #f7931a;
+        }
+
+        .whale-filter-btn.active-dolphin {
+            border-color: rgba(45,212,191,0.55);
+            background: rgba(45,212,191,0.09);
+            color: #2dd4bf;
+        }
+
+        .whale-filter-btn.active-whale {
+            border-color: rgba(247,147,26,0.55);
+            background: rgba(247,147,26,0.09);
+            color: #f7931a;
+        }
+
+        .whale-filter-btn.active-humpback {
+            border-color: rgba(239,68,68,0.55);
+            background: rgba(239,68,68,0.09);
+            color: #ef4444;
+        }
+
+        .whale-filter-btn.active-blue-whale {
+            border-color: rgba(129,140,248,0.55);
+            background: rgba(129,140,248,0.09);
+            color: #818cf8;
+        }
+
+        .whale-filter-count {
+            font-size: 0.58rem;
+            opacity: 0.65;
+            margin-left: 0.15rem;
+        }
     </style>
 </head>
 <body>
@@ -2352,9 +2471,14 @@
             <div class="wotd-amount" id="wotdAmount">—</div>
             <div class="wotd-usd"   id="wotdUsd"></div>
             <div class="wotd-meta" id="wotdMeta">Largest transaction in the last 24h</div>
-            <a class="wotd-link" id="wotdLink" href="#" target="_blank" rel="noopener noreferrer">
-                ↗ View Transaction on Mempool
-            </a>
+            <div class="wotd-actions">
+                <a class="wotd-link" id="wotdLink" href="#" target="_blank" rel="noopener noreferrer">
+                    ↗ View on Mempool
+                </a>
+                <a class="wotd-share-x" id="wotdShareX" href="#" target="_blank" rel="noopener noreferrer">
+                    <i style="font-weight:900;font-style:normal">𝕏</i> Share on X
+                </a>
+            </div>
         </div>
     </div>
 </div>
@@ -2431,7 +2555,25 @@
                     <div class="pressure-bar-fill" id="pressureOutflowBar"></div>
                 </div>
             </div>
+            <div class="pressure-row transfer">
+                <span class="pressure-row-label">🐋 Whale Transfers</span>
+                <span class="pressure-row-value" id="pressureTransfer">— BTC</span>
+                <div class="pressure-bar-track">
+                    <div class="pressure-bar-fill" id="pressureTransferBar"></div>
+                </div>
+            </div>
         </div>
+    </div>
+</div>
+
+<div class="whale-filter">
+    <div class="whale-filter-inner">
+        <span class="whale-filter-label">Filter:</span>
+        <button class="whale-filter-btn active-all" onclick="setFilter('all', this)">🐋 All Whales</button>
+        <button class="whale-filter-btn" onclick="setFilter('dolphin', this)">🐬 Dolphins <span class="whale-filter-count" id="fc-dolphin"></span></button>
+        <button class="whale-filter-btn" onclick="setFilter('whale', this)">🐋 Whales <span class="whale-filter-count" id="fc-whale"></span></button>
+        <button class="whale-filter-btn" onclick="setFilter('humpback', this)">🐋 Humpbacks <span class="whale-filter-count" id="fc-humpback"></span></button>
+        <button class="whale-filter-btn" onclick="setFilter('blue-whale', this)">🐳 Blue Whales <span class="whale-filter-count" id="fc-blue-whale"></span></button>
     </div>
 </div>
 
@@ -2678,6 +2820,7 @@ let btcPrice   = null;
 let cdValue    = INTERVAL_MS / 1000;
 let cdTimer    = null;
 let currentTxs = [];
+let activeFilter = 'all';
 
 /* ── Formatters ────────────────────────────────────── */
 
@@ -3122,26 +3265,52 @@ const KNOWN_EXCHANGES = {
     'bc1qgdjqv0av3q56jvd82tkdjpy7gdp9ut8tlqmgrpmv24sq90ecnvqqjwvw97':  'Binance',
     '1NDyJtNTjmwk5xPNhjgAMu4HDHigtobu1s':                              'Binance',
     'bc1qazcm763858nkj2dj986etajv6wquslv8uxwczt':                       'Binance',
+    '1FzWLkAahHooV3kzTgyx6qsswXJ6sCXkSR':                              'Binance',
+    '3M219KR5vEneNb47ewrPfWyb5jQ2DjxRP6':                              'Binance',
+    '1GR9qNz7zgtaW5HwwVpEJWMnGWhsbsieCG':                              'Binance',
+    'bnb1fnd0k5l4p3ck2j9x9dp36chk059w977pszdgdz':                       'Binance',
     /* Coinbase */
     '3Kzh9qAqVWQhEsfQz7zEQL1EuSx5tyNLNS':                              'Coinbase',
     '3LQUu4v9z6KNch71j7kbj8GPeAGUo1FW6a':                              'Coinbase',
     'bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2':                       'Coinbase',
+    '3LYJfcfHPXYJreMsASk2jkn69LWEYKzexb':                              'Coinbase',
+    '3QJmV3qfvL9SuYo34YihAf3sRCW3qSinyC':                              'Coinbase',
+    '1LR2tDxWKBtLkgHYHTMvXqQbvVzuMeJSjF':                              'Coinbase',
+    'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh':                       'Coinbase',
     /* Kraken */
     '3EhjYBM3uAmJUWpbFqWLgkdmMjBUqyUygC':                              'Kraken',
     'bc1qet4hjhlevq2at5sqm9yntp7scm2xa44qhkn3gx':                       'Kraken',
+    '1FBhcnGhFMKDrFZzaRUYamhPW6LBbFsZxp':                              'Kraken',
+    'bc1qfmu4gk0jmumfqqluvdmgnrmfkhdjltwzky3k5a':                       'Kraken',
     /* Bitfinex */
     '3D2oetdNuZUqQHPJmcMDDHYoqkyNVsFk9r':                              'Bitfinex',
     '1KYiKJEfdJtap9QX2v9BXJMpz2SfU4pgZw':                              'Bitfinex',
+    '3JZq4atEAaEAcj1CeKMmQ6TdFupXWynPbs':                              'Bitfinex',
+    '1EnYscjkFsQ1Psxj5L6Ts4sXCFGMrFYuWk':                              'Bitfinex',
     /* Bitstamp */
     '1LKeey1MfjLmwAASsVtTkvE2a9if6ev3LH':                              'Bitstamp',
+    '3NUf32FYiCKzKzpF3hKE89FcvFABEo7VKi':                              'Bitstamp',
+    '1HB5XMLmzFVj8ALj6mfBsbifRoD4miY36v':                              'Bitstamp',
     /* Huobi / HTX */
     '1HckjUpRGcrrRAtFaaCAUaGjoPkge3pJMb':                              'Huobi',
+    '1G47mSr3oANXMafVrR8UC4pzV7FEAzo3r9':                              'Huobi',
+    'bc1qenf50l2mfb49qr7kf8dkp3kkl4v6pq7gphqlxl':                       'Huobi',
     /* OKX */
     '3LCGsSmfr24demGvriN4e3ft8wEcDuHFqh':                              'OKX',
+    '1TipHJUhCBrNKoRUJpNuDQfMGMdvvfxjv':                               'OKX',
+    'bc1q0xn5p4s6jmkwt5wd2wy5wjq5ewkd0zjpzn4yaq':                       'OKX',
     /* Gemini */
     '393R2MkBYRjQwEEhFXYzGvPqGsWBCGF9Na':                              'Gemini',
+    '361gH5HfuZJCkf2Rr3cqY2XNdnMjBDtk6y':                              'Gemini',
     /* Bybit */
     'bc1qll4vs3ye5z9q5xtspk9pgahf4kuf05qjqgqjlj':                       'Bybit',
+    '1A1zP1eP5QGefi2DMPTfTL5SLmv7Divfna':                              'Bybit',
+    /* Crypto.com */
+    '3LpE3fEMdEGBys9AEhfrR4HjHyFrHGjXzr':                              'Crypto.com',
+    '1GQjBCbStS6cJDiMuXbxBbKUyB6vifJfkN':                              'Crypto.com',
+    /* KuCoin */
+    '1Nqe9pJ9Cj6StWFBJjxd7UfCupV8KBF7aN':                              'KuCoin',
+    '3E35SFZkfLMGo4qX5aVs1bBDSnAuGgBLx3':                              'KuCoin',
 };
 
 // Per-session cache of mempool.space API label results
@@ -3279,28 +3448,58 @@ function classifyWhale(btc) {
 }
 
 function buildTweetUrl(btc, usd, from, to, txid) {
+    const whale    = classifyWhale(btc);
     const flow     = getFlow(from, to);
-    const fromName = flow.src.name === 'Wallet'   ? 'Unknown Wallet'
-                   : flow.src.name === 'Unknown'  ? 'Unknown Wallet'
-                   : flow.src.name === 'Mining'   ? 'Mining Reward'
+
+    const fromName = flow.src.name === 'Wallet'  ? 'Unknown Wallet'
+                   : flow.src.name === 'Unknown' ? 'Unknown Wallet'
+                   : flow.src.name === 'Mining'  ? 'Mining Reward'
                    : flow.src.name;
-    const toName   = flow.dst.name === 'Wallet'   ? 'Unknown Wallet'
-                   : flow.dst.name === 'Unknown'  ? 'Unknown Wallet'
+    const toName   = flow.dst.name === 'Wallet'  ? 'Unknown Wallet'
+                   : flow.dst.name === 'Unknown' ? 'Unknown Wallet'
                    : flow.dst.name;
 
-    const btcStr   = fmtBtc(btc) + ' BTC';
-    const usdStr   = usd ? ' (' + fmtUsd(usd) + ')' : '';
-    const txUrl    = BASE + '/tx/' + txid;
+    const impactMap = {
+        'tier-dolphin':    'Medium whale activity',
+        'tier-whale':      'Significant whale activity',
+        'tier-humpback':   'Large whale activity',
+        'tier-blue-whale': 'Massive whale activity',
+    };
+    const impact = impactMap[whale.cls];
+
+    let signal;
+    if (flow.src.type === 'coinbase') {
+        signal = 'New supply — mining reward';
+    } else if (flow.dst.type === 'exchange' && flow.src.type !== 'exchange') {
+        signal = 'Bearish — sending to exchange';
+    } else if (flow.src.type === 'exchange' && flow.dst.type !== 'exchange') {
+        signal = 'Bullish — withdrawing from exchange';
+    } else if (flow.src.type === 'exchange' && flow.dst.type === 'exchange') {
+        signal = 'Neutral — exchange transfer';
+    } else {
+        signal = 'Neutral — wallet transfer';
+    }
+
+    const btcStr = fmtBtc(btc) + ' BTC';
+    const usdStr = usd ? ' (' + fmtUsd(usd) + ')' : '';
+    const txUrl  = BASE + '/tx/' + txid;
 
     const text = [
-        '🐋 Whale Alert!',
+        whale.emoji + ' ' + whale.label + ' Detected',
         '',
-        btcStr + usdStr + ' just moved',
-        fromName + ' → ' + toName,
+        btcStr + usdStr,
+        fromName + ' \u2192 ' + toName,
         '',
-        'Verify: ' + txUrl,
+        'Size Impact: ' + impact,
+        'Market Signal: ' + signal,
         '',
-        '#Bitcoin #WhaleAlert #BTC'
+        'Verify:',
+        txUrl,
+        '',
+        'Tracked with Bitcoin Humpback Whale Tracker',
+        'https://clausbmf.github.io/bitcoin-defi-signal-dashboard/',
+        '',
+        '#Bitcoin #OnChain #Whale #OnChainData',
     ].join('\n');
 
     return 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text);
@@ -3445,6 +3644,7 @@ function updateWhaleOfDay(tx, btc) {
     document.getElementById('wotdUsd').textContent    = usd ? fmtUsd(usd) : '';
     document.getElementById('wotdMeta').textContent = flow.src.name + ' → ' + flow.dst.name + '  ·  ' + age;
     document.getElementById('wotdLink').href = BASE + '/tx/' + tx.txid;
+    document.getElementById('wotdShareX').href = buildTweetUrl(btc, usd, from, to, tx.txid);
 }
 
 function renderFeed(txs) {
@@ -3452,13 +3652,26 @@ function renderFeed(txs) {
     const feed = document.getElementById('feed');
     const frag = document.createDocumentFragment();
 
+    const display = filterTxsForDisplay(txs);
+
     const meta = document.createElement('div');
     meta.className = 'feed-meta';
-    meta.textContent =
-        `Transactions ≥ ${WHALE_BTC} BTC  ·  ${txs.length} whale${txs.length !== 1 ? 's' : ''} in the last 24h`;
+    meta.textContent = activeFilter === 'all'
+        ? `Transactions ≥ ${WHALE_BTC} BTC  ·  ${txs.length} whale${txs.length !== 1 ? 's' : ''} in the last 24h`
+        : `Showing ${display.length} of ${txs.length} whale${txs.length !== 1 ? 's' : ''} · filtered`;
     frag.appendChild(meta);
 
-    txs.forEach(tx => frag.appendChild(makeCard(tx)));
+    if (display.length === 0 && txs.length > 0) {
+        const tierNames = { dolphin: 'Dolphins', whale: 'Whales', humpback: 'Humpback Whales', 'blue-whale': 'Blue Whales' };
+        const empty = document.createElement('div');
+        empty.className = 'empty-wrap';
+        empty.innerHTML = `<span class="empty-emoji">🔍</span>
+            <div class="empty-title">No ${tierNames[activeFilter] || ''} in the last 24h</div>
+            <div class="empty-sub">Try a different filter or wait for new alerts.</div>`;
+        frag.appendChild(empty);
+    } else {
+        display.forEach(tx => frag.appendChild(makeCard(tx)));
+    }
 
     feed.innerHTML = '';
     feed.appendChild(frag);
@@ -3472,6 +3685,7 @@ function renderFeed(txs) {
     updatePressureIndicator(txs);
     updateWhaleWave(txs);
     checkNewWhales(txs);
+    updateFilterCounts(currentTxs);
 }
 
 function showLoading() {
@@ -3601,50 +3815,61 @@ function updateWhaleWave(txs) {
 /* ── Whale Pressure Indicator ───────────────────────── */
 
 function updatePressureIndicator(txs) {
-    let inflow  = 0; // wallet/unknown → exchange  (bearish)
-    let outflow = 0; // exchange → wallet/unknown  (bullish)
+    let inflow   = 0; // wallet → exchange  (sell pressure)
+    let outflow  = 0; // exchange → wallet  (accumulation)
+    let transfer = 0; // wallet → wallet    (whale moves)
 
     for (const tx of txs) {
-        const from  = senderAddr(tx);
-        const to    = receiverAddr(tx);
-        const btc   = txValueSats(tx) / SATS;
-        const flow  = getFlow(from, to);
+        const btc = txValueSats(tx) / SATS;
 
-        if (flow.dst.type === 'exchange' && flow.src.type !== 'exchange') {
-            inflow  += btc;
-        } else if (flow.src.type === 'exchange' && flow.dst.type !== 'exchange') {
-            outflow += btc;
+        // Scan ALL inputs for exchange addresses
+        const fromExchange = (tx.vin || []).some(vin => {
+            const addr = vin.prevout?.scriptpubkey_address;
+            return addr && getLabel(addr) !== null;
+        });
+
+        // Scan ALL outputs for exchange addresses
+        const toExchange = (tx.vout || []).some(vout => {
+            const addr = vout.scriptpubkey_address;
+            return addr && getLabel(addr) !== null;
+        });
+
+        if (toExchange && !fromExchange) {
+            inflow   += btc;
+        } else if (fromExchange && !toExchange) {
+            outflow  += btc;
+        } else if (!fromExchange && !toExchange) {
+            transfer += btc;
         }
     }
 
-    const total = inflow + outflow;
+    const total = inflow + outflow + transfer;
 
-    document.getElementById('pressureInflow').textContent  =
-        fmtBtc(inflow)  + ' BTC';
-    document.getElementById('pressureOutflow').textContent =
-        fmtBtc(outflow) + ' BTC';
+    document.getElementById('pressureInflow').textContent   = fmtBtc(inflow)   + ' BTC';
+    document.getElementById('pressureOutflow').textContent  = fmtBtc(outflow)  + ' BTC';
+    document.getElementById('pressureTransfer').textContent = fmtBtc(transfer) + ' BTC';
 
-    // Scale bars relative to whichever side is larger
+    // Scale bars relative to total volume
     if (total > 0) {
-        document.getElementById('pressureInflowBar').style.width  =
-            (inflow  / total * 100).toFixed(1) + '%';
-        document.getElementById('pressureOutflowBar').style.width =
-            (outflow / total * 100).toFixed(1) + '%';
+        document.getElementById('pressureInflowBar').style.width   = (inflow   / total * 100).toFixed(1) + '%';
+        document.getElementById('pressureOutflowBar').style.width  = (outflow  / total * 100).toFixed(1) + '%';
+        document.getElementById('pressureTransferBar').style.width = (transfer / total * 100).toFixed(1) + '%';
     }
 
-    const sig  = document.getElementById('pressureSignal');
-    const diff = inflow - outflow;
-    const threshold = total * 0.1; // within 10% → neutral
+    const sig       = document.getElementById('pressureSignal');
+    const exchTotal = inflow + outflow;
+    const diff      = inflow - outflow;
+    const threshold = exchTotal * 0.1; // within 10% of exchange volume → neutral
 
-    if (total === 0 || (Math.abs(diff) < threshold)) {
-        sig.className = 'pressure-signal neutral';
+    if (exchTotal === 0 || Math.abs(diff) < threshold) {
+        sig.className   = 'pressure-signal neutral';
         sig.textContent = '⚖️ Neutral';
     } else if (diff > 0) {
-        sig.className = 'pressure-signal bearish';
-        sig.textContent = '🐻 Bearish Pressure';
+        sig.className   = 'pressure-signal bearish';
+        sig.textContent = '🔴 Sell Pressure';
     } else {
-        sig.className = 'pressure-signal bullish';
-        sig.textContent = '🐂 Bullish Accumulation';
+        sig.className   = 'pressure-signal bullish';
+        sig.textContent = '🟢 Accumulation';
     }
 }
 
@@ -3851,6 +4076,71 @@ function simulateEscrow() {
     result.classList.remove('visible');
     void result.offsetWidth; // replay animation
     result.classList.add('visible');
+}
+
+/* ── Whale Size Filter ──────────────────────────────── */
+
+function filterTxsForDisplay(txs) {
+    if (activeFilter === 'all') return txs;
+    const tierMap = {
+        'dolphin':    'tier-dolphin',
+        'whale':      'tier-whale',
+        'humpback':   'tier-humpback',
+        'blue-whale': 'tier-blue-whale',
+    };
+    const target = tierMap[activeFilter];
+    return txs.filter(tx => classifyWhale(txValueSats(tx) / SATS).cls === target);
+}
+
+function updateFilterCounts(txs) {
+    const counts = { dolphin: 0, whale: 0, humpback: 0, 'blue-whale': 0 };
+    for (const tx of txs) {
+        if (tx._isDemo) continue;
+        const cls = classifyWhale(txValueSats(tx) / SATS).cls;
+        if      (cls === 'tier-dolphin')    counts.dolphin++;
+        else if (cls === 'tier-whale')      counts.whale++;
+        else if (cls === 'tier-humpback')   counts.humpback++;
+        else if (cls === 'tier-blue-whale') counts['blue-whale']++;
+    }
+    for (const [tier, n] of Object.entries(counts)) {
+        const el = document.getElementById('fc-' + tier);
+        if (el) el.textContent = n > 0 ? '(' + n + ')' : '';
+    }
+}
+
+function redrawCards() {
+    const feed    = document.getElementById('feed');
+    const frag    = document.createDocumentFragment();
+    const display = filterTxsForDisplay(currentTxs);
+
+    const meta = document.createElement('div');
+    meta.className = 'feed-meta';
+    meta.textContent = activeFilter === 'all'
+        ? `Transactions ≥ ${WHALE_BTC} BTC  ·  ${currentTxs.length} whale${currentTxs.length !== 1 ? 's' : ''} in the last 24h`
+        : `Showing ${display.length} of ${currentTxs.length} whale${currentTxs.length !== 1 ? 's' : ''} · filtered`;
+    frag.appendChild(meta);
+
+    if (display.length === 0 && currentTxs.length > 0) {
+        const tierNames = { dolphin: 'Dolphins', whale: 'Whales', humpback: 'Humpback Whales', 'blue-whale': 'Blue Whales' };
+        const empty = document.createElement('div');
+        empty.className = 'empty-wrap';
+        empty.innerHTML = `<span class="empty-emoji">🔍</span>
+            <div class="empty-title">No ${tierNames[activeFilter] || ''} in the last 24h</div>
+            <div class="empty-sub">Try a different filter or wait for new alerts.</div>`;
+        frag.appendChild(empty);
+    } else {
+        display.forEach(tx => frag.appendChild(makeCard(tx)));
+    }
+
+    feed.innerHTML = '';
+    feed.appendChild(frag);
+}
+
+function setFilter(tier, btn) {
+    activeFilter = tier;
+    document.querySelectorAll('.whale-filter-btn').forEach(b => b.className = 'whale-filter-btn');
+    btn.className = 'whale-filter-btn active-' + tier;
+    redrawCards();
 }
 
 /* ── Yield Calculator ───────────────────────────────── */
